@@ -20,185 +20,178 @@
 
 ## Como leer esta guia
 
-Esta parte mezcla patrones de resiliencia, asincronia, seguridad y despliegue.
-Son temas muy utiles cuando una API ya esta funcionando en entornos reales.
+Esta parte agrupa patrones de resiliencia, asincronia, logging, seguridad y despliegue.
+Son temas muy de produccion y muy utiles en entrevistas de backend.
 
 ## 76. Event-Driven API
 
-Una `Event-Driven API` reacciona a eventos en lugar de depender solo de peticiones directas.
+**Definition:** Una `Event-Driven API` se activa por eventos en lugar de depender solo de requests directas.
 
-Ejemplo:
+**Examples:**
 
-- usuario registrado
 - pedido creado
+- usuario registrado
 - pago completado
 
-En lugar de consultar constantemente, los sistemas reaccionan cuando algo ocurre.
+Se usa mucho en microservicios.
 
 ## 77. Message Queue
 
-Una `Message Queue` es una cola donde un sistema deja mensajes para que otro los procese despues.
+**Definition:** Una `message queue` es una cola que guarda mensajes para procesarlos de forma asincrona.
 
-Sirve para desacoplar servicios y procesar tareas asincronas.
+**Why used:**
 
-Ejemplo:
-la API recibe un pedido y envia un mensaje para generar la factura mas tarde.
+- mejora escalabilidad
+- evita bloquear procesos
+- absorbe picos de trafico
 
 ## 78. Message Queue Tools
 
-Herramientas comunes:
+- RabbitMQ
+- Kafka
+- AWS SQS
+- Redis Queue
 
-- `RabbitMQ`
-- `Kafka`
-- `Amazon SQS`
-- `Redis Streams`
-
-Cada una sirve para distintos niveles de escala y patrones de mensajeria.
+**Real-time Example:** Procesamiento de pedidos en Amazon.
 
 ## 79. Sync vs Async APIs
 
-`Sync` significa que el cliente espera la respuesta en ese momento.
-`Async` significa que la tarea puede seguir despues y la respuesta final llegar mas tarde.
+| Synchronous | Asynchronous |
+| --- | --- |
+| el cliente espera | el cliente puede continuar |
+| blocking | non-blocking |
+| peor para tareas pesadas | mejor para escalar |
 
-Ejemplo:
+**Examples:**
 
-- sync: consultar perfil
-- async: procesar video o enviar miles de emails
+- `Sync` = obtener perfil de usuario
+- `Async` = enviar email o generar un reporte
 
 ## 80. Retry Mechanism
 
-Un `Retry Mechanism` repite una operacion cuando falla por una causa temporal.
+**Definition:** Consiste en reintentar automaticamente requests fallidas.
 
-Ejemplo:
-si otro servicio tarda demasiado o da error momentaneo, el sistema reintenta.
-
-Buena practica:
-
-- limitar numero de reintentos
-- usar esperas progresivas
+**Real-time Scenario:** Si falla la red al crear un pedido, el sistema puede reintentar de forma segura.
 
 ## 81. Circuit Breaker Pattern
 
-El `Circuit Breaker Pattern` evita llamar repetidamente a un servicio que ya esta fallando.
+**Definition:** El `circuit breaker` detiene llamadas a un servicio que esta fallando para evitar que todo el sistema colapse.
 
-Idea simple:
-
-- si un servicio falla mucho, se corta temporalmente el paso
-- luego se prueba otra vez mas tarde
-
-Esto evita cascadas de fallos.
+**Real-time Example:** Si falla el payment gateway, se paran temporalmente las llamadas y se usa un fallback.
 
 ## 82. Preventing Duplicate API Requests
 
-Para prevenir duplicados se puede usar:
+**Techniques:**
 
-- `idempotency keys`
-- bloqueo temporal
-- control de reintentos
-- validacion por request id
+- idempotency keys
+- request hashing
+- unique transaction IDs
 
-Ejemplo comun:
-evitar cobrar dos veces una misma compra.
+**Example:** Evitar doble pago cuando el usuario pulsa `Pay` dos veces.
 
 ## 83. API Schema Evolution
 
-`API Schema Evolution` es el cambio progresivo de esquemas sin romper clientes existentes.
+**Definition:** Gestionar cambios de esquema sin romper a los clientes existentes.
 
-Buenas practicas:
+**Techniques:**
 
-- agregar campos opcionales
-- deprecar antes de eliminar
-- versionar cambios grandes
-
-La evolucion debe ser controlada.
+- versioning
+- backward compatibility
+- optional fields
 
 ## 84. Logging API Calls
 
-Registrar llamadas a la API ayuda a:
+**Logging Includes:**
 
-- auditar actividad
-- detectar errores
-- analizar trafico
-- depurar problemas
+- timestamp
+- endpoint
+- status code
+- response time
+- user ID
+- errors
 
-Se suelen registrar datos como ruta, metodo, status, duracion y request id.
+**Why important:**
+
+- debugging
+- auditing
+- monitoring
 
 ## 85. API Abuse
 
-`API Abuse` es el uso malicioso o excesivo de una API.
+**Definition:** Uso indebido de la API, intencional o no.
 
-Ejemplos:
+**Examples:**
 
-- scraping agresivo
-- ataques automatizados
 - brute force
-- envio masivo de requests
+- scraping
+- DDoS
+- exceso de requests
 
-Por eso se combinan rate limiting, auth y monitoreo.
+**Prevention:**
+
+- rate limiting
+- captcha
+- authentication
 
 ## 86. Preventing SQL Injection via API
 
-Para prevenir `SQL Injection` se recomienda:
+**Techniques:**
 
-- usar queries parametrizadas
-- validar entrada
-- evitar concatenar SQL manualmente
-- usar ORM o query builders seguros
+- input validation
+- prepared statements
+- ORM
+- escaping inputs
 
-Nunca debes confiar ciegamente en los datos de entrada.
+**Bad Example:**
+
+```text
+SELECT * FROM users WHERE id= + userInput
+```
 
 ## 87. API Timeout
 
-Un `API Timeout` es el limite de tiempo para esperar una respuesta.
+**Definition:** Tiempo maximo que un cliente espera una respuesta.
 
-Si se supera ese tiempo, la peticion falla o se cancela.
-
-Esto evita que procesos lentos bloqueen indefinidamente al cliente o al servidor.
+**Real-time Example:** Una API de pagos puede cortar por timeout a los 30 segundos.
 
 ## 88. Handling Concurrent API Requests
 
-Cuando muchas peticiones llegan al mismo tiempo, hay que manejar concurrencia con cuidado.
+**Techniques:**
 
-Tecnicas comunes:
+- async processing
+- thread pools
+- queues
+- locks
+- optimistic concurrency control
 
-- bloqueos
-- colas
-- transacciones
-- control de version
-
-Esto ayuda a evitar datos inconsistentes.
+**Real-time Example:** Muchos usuarios intentando reservar el mismo asiento de tren.
 
 ## 89. Blue-Green Deployment
 
-`Blue-Green Deployment` usa dos entornos casi identicos:
+**Definition:** Desplegar una nueva version sin downtime usando dos entornos.
 
-- `blue`: version actual
-- `green`: nueva version
+**Flow:**
 
-Cuando la nueva esta lista, se cambia el trafico de una a otra.
-
-Ventaja:
-rollback rapido si algo sale mal.
+- `Blue` = version anterior
+- `Green` = version nueva
+- luego se cambia el trafico
 
 ## 90. Canary Release
 
-En un `Canary Release`, la nueva version se libera primero a un pequeno porcentaje de usuarios.
+**Definition:** Liberar una nueva version poco a poco a un pequeno porcentaje de usuarios.
 
-Si todo va bien, se aumenta el trafico poco a poco.
-
-Ventaja:
-reduce el riesgo de fallos masivos.
+**Benefit:** Detectar bugs antes del rollout completo.
 
 ## Resumen rapido
 
 - event-driven = reaccionar a eventos
-- message queue = procesar despues
-- sync vs async = respuesta inmediata o diferida
+- message queue = desacoplar y procesar despues
+- sync vs async = esperar o no esperar
 - retry = reintentar fallos temporales
-- circuit breaker = cortar llamadas a servicios caidos
+- circuit breaker = cortar dependencia fallida
 - logging = registrar actividad
 - blue-green y canary = despliegues mas seguros
 
 ## Siguiente paso
 
-La ultima parte de esta seccion cierra con testing, compatibilidad, tracing y diseno de entrevista.
+La ultima parte cierra con testing automatico, compatibilidad, tracing y diseno orientado a contrato.

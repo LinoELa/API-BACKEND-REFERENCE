@@ -20,223 +20,171 @@
 
 ## Como leer esta guia
 
-Esta parte reune conceptos de arquitectura, estilos de comunicacion y rendimiento.
-Son temas muy comunes cuando una API deja de ser pequena y empieza a crecer.
+Aqui ya aparecen temas de arquitectura, contratos y rendimiento.
+Son conceptos muy comunes cuando una API empieza a crecer de verdad.
 
 ## 46. HATEOAS
 
-`HATEOAS` significa `Hypermedia As The Engine Of Application State`.
-Es una idea de REST donde la respuesta incluye enlaces a acciones relacionadas.
+**Definition:** `HATEOAS` (`Hypermedia As The Engine Of Application State`) significa que las respuestas de la API incluyen enlaces hacia acciones relacionadas.
 
-Ejemplo:
+**Real-time Example:**
 
 ```json
 {
-  "id": 10,
-  "name": "Ana",
+  "orderId": 123,
+  "status": "shipped",
   "links": {
-    "self": "/users/10",
-    "orders": "/users/10/orders"
+    "track": "/orders/123/track",
+    "cancel": "/orders/123/cancel"
   }
 }
 ```
 
-La API no solo devuelve datos, tambien devuelve caminos posibles.
-
 ## 47. API Gateway
 
-Un `API Gateway` es una puerta de entrada unica para varios servicios.
+**Definition:** Un `API Gateway` es un punto de entrada unico que gestiona requests hacia varios servicios backend.
 
-Puede encargarse de:
+**Responsibilities:**
 
-- autenticacion
-- routing
+- authentication
 - rate limiting
+- routing
 - logging
-- cache
-
-Idea simple: centraliza tareas comunes antes de llegar a los microservicios.
 
 ## 48. Microservices Architecture
 
-La `Microservices Architecture` divide una aplicacion en varios servicios pequenos e independientes.
+**Definition:** Es una arquitectura donde una aplicacion se divide en servicios pequenos e independientes.
 
-Ejemplo:
+**Real-time Example - E-commerce:**
 
-- servicio de usuarios
-- servicio de pagos
-- servicio de notificaciones
+- User Service
+- Order Service
+- Payment Service
+- Inventory Service
 
-Cada servicio puede desplegarse y escalar de forma separada.
+Cada uno tiene su propia API.
 
 ## 49. API Gateway Real-Time Use Case
 
-Caso real:
+**Flow:**
 
-1. el frontend llama a un solo endpoint publico
-2. el API Gateway valida el token
-3. decide a que microservicio enviar la peticion
-4. agrega headers comunes
-5. registra logs y metricas
-6. devuelve una respuesta unificada
+```text
+Client -> API Gateway -> Appropriate Microservice
+```
 
-Esto simplifica mucho al cliente.
+**Benefits:**
+
+- simplifica la logica del frontend
+- centraliza seguridad
+- facilita monitoring
 
 ## 50. REST vs SOAP
 
-`REST` y `SOAP` son dos estilos distintos para construir servicios.
-
-Diferencias generales:
-
-- REST suele ser mas ligero
-- SOAP es mas formal y estricto
-- REST usa mucho JSON
-- SOAP usa XML
-
-REST es muy comun en APIs web modernas.
-SOAP sigue apareciendo en entornos corporativos y sistemas legacy.
+| Feature | REST | SOAP |
+| --- | --- | --- |
+| Protocol | HTTP | XML-based |
+| Format | JSON | XML |
+| Speed | Fast | Slower |
+| Complexity | Simple | Complex |
+| Usage | Modern web apps | Legacy systems |
 
 ## 51. SOAP
 
-`SOAP` significa `Simple Object Access Protocol`.
-Es un protocolo de comunicacion basado normalmente en XML.
+**Definition:** `SOAP` (`Simple Object Access Protocol`) es un protocolo de mensajeria basado en XML.
 
-Se caracteriza por:
+**Real-time Use:**
 
-- mensajes estructurados
-- contratos estrictos
-- fuerte enfoque empresarial
-
-Suele usarse donde importan mucho las reglas, contratos y estandares formales.
+- sistemas bancarios
+- sistemas empresariales legacy
 
 ## 52. WSDL
 
-`WSDL` significa `Web Services Description Language`.
-Es un archivo XML que describe un servicio SOAP.
+**Definition:** `WSDL` describe la estructura, operaciones y endpoints de un servicio SOAP.
 
-Define:
+**Analogy:**
 
-- operaciones disponibles
-- parametros
-- tipos de datos
-- ubicacion del servicio
-
-En SOAP, WSDL funciona como un contrato tecnico formal.
+- `WSDL` = contrato
+- `API` = implementacion
 
 ## 53. GraphQL
 
-`GraphQL` es un lenguaje de consultas para APIs.
-Permite al cliente pedir exactamente los campos que necesita.
+**Definition:** `GraphQL` es un lenguaje de consulta que permite al cliente pedir exactamente los datos que necesita.
 
-Ejemplo:
+**Real-time Example:**
 
 ```graphql
-query {
-  user(id: 5) {
+{
+  user(id: 1) {
     name
     email
   }
 }
 ```
 
-Esto reduce respuestas demasiado grandes o demasiado pequenas.
-
 ## 54. REST vs GraphQL
 
-Comparacion simple:
+**REST Issue:** over-fetching o under-fetching
 
-- REST usa multiples endpoints
-- GraphQL suele usar un endpoint principal
-- REST devuelve respuestas mas fijas
-- GraphQL deja elegir campos al cliente
+**GraphQL Solution:** peticiones mas precisas
 
-REST es mas simple de adoptar.
-GraphQL da mucha flexibilidad, pero tambien introduce mas complejidad.
+Lectura rapida:
+
+- REST suele devolver respuestas mas fijas
+- GraphQL permite elegir solo los campos necesarios
 
 ## 55. API Throttling
 
-`API Throttling` es una tecnica para reducir o controlar la velocidad de peticiones cuando un cliente consume demasiado.
+**Definition:** `API Throttling` es el control temporal de la velocidad de requests cuando la carga del servidor es alta.
 
-Se parece al rate limiting, pero suele enfocarse mas en ralentizar o regular el trafico que en bloquearlo por completo.
-
-Sirve para proteger el sistema en momentos de carga.
+**Real-time Example:** Durante un pico de ventas tipo Amazon, se limita trafico para evitar caidas.
 
 ## 56. Load Balancing
 
-`Load Balancing` significa repartir trafico entre varios servidores o instancias.
+**Definition:** Reparte requests entrantes entre varios servidores.
 
-Beneficios:
-
-- evita sobrecarga en un solo servidor
-- mejora disponibilidad
-- permite escalar mejor
-
-Ejemplo:
-un balanceador reparte requests entre tres instancias de la misma API.
+**Real-time Scenario:** Trafico tipo Netflix distribuido entre muchos servidores alrededor del mundo.
 
 ## 57. API Mocking
 
-`API Mocking` consiste en simular una API real.
+**Definition:** `API Mocking` significa simular respuestas de una API sin backend real.
 
-Se usa mucho para:
-
-- desarrollo frontend
-- pruebas tempranas
-- testing sin depender del backend real
-
-Ejemplo:
-devolver respuestas falsas pero con la misma estructura esperada.
+**Real-time Usage:** El equipo frontend puede avanzar antes de que el backend este terminado.
 
 ## 58. Contract Testing
 
-`Contract Testing` verifica que dos sistemas respeten el contrato acordado entre ellos.
+**Definition:** Comprueba que proveedor y consumidor respetan el mismo contrato de API.
 
-Ejemplo:
-si frontend espera un campo `email`, el backend no deberia quitarlo sin avisar.
-
-Este tipo de prueba ayuda a detectar roturas entre productor y consumidor.
+**Real-time Example:** Si frontend espera un campo `email`, backend no deberia eliminarlo sin coordinarlo.
 
 ## 59. API Latency
 
-`API Latency` es el tiempo que tarda una API en responder.
+**Definition:** Es el tiempo desde que se envia una request hasta que se recibe la response.
 
-Puede verse afectada por:
-
-- consultas lentas
-- red
-- procesamiento pesado
-- llamadas a otros servicios
-
-Menor latencia significa respuestas mas rapidas.
+**Impact:** Alta latencia significa mala experiencia de usuario.
 
 ## 60. Reducing API Latency
 
-Algunas formas de reducir latencia son:
+**Techniques:**
 
-- usar cache
-- optimizar consultas a base de datos
-- reducir payloads
-- usar paginacion
-- evitar llamadas innecesarias
-- comprimir respuestas
-- usar load balancing
-
-La mejora suele venir de quitar cuellos de botella.
+- caching
+- database indexing
+- CDN
+- async processing
 
 ## Resumen rapido
 
-- HATEOAS = enlaces dentro de la respuesta
-- API Gateway = entrada unica para varios servicios
-- microservices = servicios pequenos e independientes
-- REST y SOAP = estilos distintos
-- GraphQL = consulta flexible de datos
-- throttling = control de velocidad
+- HATEOAS = enlaces accionables en la respuesta
+- API Gateway = entrada unica
+- microservices = servicios independientes
+- SOAP = protocolo XML
+- WSDL = contrato de SOAP
+- GraphQL = datos exactos
+- throttling = control temporal de velocidad
 - load balancing = reparto de trafico
-- mocking = API simulada
-- contract testing = validar contrato entre sistemas
+- mocking = simular backend
+- contract testing = validar contrato
 - latency = tiempo de respuesta
 
 ## Cierre de seccion
 
-Con `Q31-Q60` queda completa la parte intermedia.
-La siguiente seccion entra ya en seguridad, errores, observabilidad y escenarios mas cercanos a produccion.
+Con `Q31-Q60` queda la parte intermedia mucho mas alineada con el PDF, incluyendo ejemplos y escenarios de uso reales.

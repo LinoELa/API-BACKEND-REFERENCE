@@ -20,217 +20,237 @@
 
 ## Como leer esta guia
 
-Esta parte ya se parece mucho al trabajo real en backend.
-No solo importa que la API funcione, sino que sea segura, observable y facil de mantener.
+Esta parte ya se acerca mucho a produccion: seguridad, errores, middleware, ficheros, monitoreo y webhooks.
+Mantiene el estilo del PDF con definiciones, listas practicas y ejemplos reales.
 
 ## 61. Securing an API
 
-Para asegurar una API se suelen combinar varias capas:
+**Definition:** Asegurar una API significa permitir acceso solo a clientes validos y autorizados mientras proteges los datos frente a ataques.
 
-- `HTTPS`
-- autenticacion y autorizacion
-- validacion de entrada
+**Key Security Measures:**
+
+- HTTPS
+- authentication
+- authorization
+- input validation
 - rate limiting
-- sanitizacion de datos
-- logs y monitoreo
+- firewall y WAF
 
-La seguridad no depende de una sola tecnica, sino de varias juntas.
+**Real-time Scenario - Banking App:**
+
+- HTTPS cifra transacciones
+- JWT valida usuarios
+- rate limiting frena brute force
+- validacion evita SQL injection
 
 ## 62. Real-Time Login API Flow
 
-Flujo basico:
+**Step-by-step Flow:**
 
-1. el cliente envia email y password
-2. la API valida credenciales
-3. genera access token y a veces refresh token
-4. devuelve los tokens
-5. el cliente usa el access token en siguientes requests
+1. el usuario escribe username y password
+2. el cliente envia `POST /login`
+3. el servidor valida credenciales
+4. genera JWT
+5. devuelve el token
+6. el cliente lo manda en siguientes requests
+7. el servidor lo verifica
 
-Ejemplo:
-
-```http
-POST /auth/login
-```
+**Real-time Examples:** Amazon, Netflix o Gmail siguen un flujo parecido.
 
 ## 63. API Error Handling
 
-`API Error Handling` es la forma en que una API detecta, organiza y responde a errores.
+**Definition:** Consiste en devolver respuestas utiles y seguras cuando algo falla.
 
-Buena practica:
+**Best Practices:**
 
-- usar codigos HTTP correctos
-- responder con mensajes claros
-- evitar filtrar detalles sensibles
+- status codes correctos
+- mensajes claros
+- logs de errores
+- no exponer stack traces internos
 
-Ejemplo:
+**Example Response:**
 
 ```json
 {
-  "error": "Invalid credentials"
+  "error": "Invalid credentials",
+  "code": 401
 }
 ```
 
 ## 64. Centralized Error Handling
 
-El manejo centralizado significa procesar errores en un solo punto comun.
+**Definition:** Manejar todos los errores de la aplicacion desde un punto comun, como middleware o global handler.
 
-Ventajas:
+**Benefits:**
 
+- codigo mas limpio
 - respuestas consistentes
-- menos codigo repetido
-- logs mas claros
+- debugging mas facil
 
-Es muy comun en frameworks como Express, NestJS o Spring.
+**Real-time Use:**
+
+- middleware de errores en Express.js
+- global exception handler en Spring Boot
 
 ## 65. Designing a REST API
 
-Al disenar una REST API conviene:
+**Best Practices:**
 
-- usar nombres claros de recursos
+- usar sustantivos, no verbos
 - usar bien los metodos HTTP
-- devolver status codes correctos
-- mantener consistencia
-- versionar cuando haga falta
+- versionado
+- status codes correctos
+- nombres consistentes
+- paginacion y filtros
+- seguridad
 
-Ejemplo:
+**Good Design:**
 
 ```http
 GET /users
 POST /users
-GET /users/10
+GET /users/{id}
+```
+
+**Bad Design:**
+
+```http
+/getUsers
+/createUser
 ```
 
 ## 66. API Schema Validation
 
-`API Schema Validation` verifica que los datos entrantes o salientes cumplan una estructura esperada.
+**Definition:** Verifica que las requests entrantes cumplan la estructura esperada.
 
-Ejemplo:
-si `email` debe ser string y obligatorio, la API debe validarlo antes de procesar.
+**Why important:**
 
-Esto evita errores, entradas invalidas y comportamientos inseguros.
+- previene datos invalidos
+- mejora seguridad
+- evita crashes
+
+**Tools:**
+
+- Joi
+- Zod
+- JSON Schema
+- OpenAPI validation
 
 ## 67. OpenAPI Specification
 
-`OpenAPI Specification` es un estandar para describir APIs REST.
+**Definition:** Es un formato estandar para definir APIs REST.
 
-Permite documentar:
+**Uses:**
 
-- endpoints
-- parametros
-- respuestas
-- esquemas
-- autenticacion
+- generar documentacion
+- generar SDKs
+- validar requests
 
-Es la base de muchas herramientas como Swagger UI.
+**Real-time Example:** Swagger UI en APIs como Stripe, GitHub o PayPal.
 
 ## 68. Middleware
 
-`Middleware` es codigo que se ejecuta entre la request y la respuesta.
+**Definition:** Codigo que se ejecuta entre request y response.
 
-Puede usarse para:
+**Real-time Uses:**
 
-- autenticar
-- registrar logs
-- validar datos
-- transformar requests
+- authentication
+- logging
+- validation
+- error handling
+- rate limiting
 
-Es una pieza clave en muchas APIs.
+**Flow:**
+
+```text
+Request -> Middleware -> Controller -> Response
+```
 
 ## 69. Middleware Real-Time Example
 
-Ejemplo real:
+**Scenario:** Para cada request a `/api/orders`:
 
-1. llega una request a `/profile`
-2. middleware lee `Authorization`
-3. valida el token
-4. si es valido, deja pasar
-5. si no, responde `401`
-
-Asi el controlador solo maneja la logica principal.
+1. verificar JWT
+2. registrar la request
+3. validar input
+4. procesar request
 
 ## 70. File Upload via API
 
-Subir archivos por API suele hacerse con `multipart/form-data`.
+**Definition:** La subida de archivos por API suele usar `multipart/form-data`.
 
-Ejemplos comunes:
+**Real-time Example:** Subir foto de perfil en Facebook o Instagram.
 
-- imagenes de perfil
-- documentos PDF
-- adjuntos
+**Header:**
 
-Buena practica:
-
-- limitar tamano
-- validar tipo de archivo
-- almacenar de forma segura
+```http
+Content-Type: multipart/form-data
+```
 
 ## 71. Handling Large API Responses
 
-Cuando una respuesta es muy grande, conviene:
+**Techniques:**
 
-- usar paginacion
-- filtrar campos
-- comprimir respuesta
-- usar streaming si aplica
+- pagination
+- streaming
+- compression (`gzip`)
+- caching
+- lazy loading
 
-Enviar demasiados datos de golpe empeora rendimiento y experiencia.
+**Real-time Scenario:** Descargar el historial de transacciones de un banco.
 
 ## 72. API Monitoring
 
-`API Monitoring` consiste en observar la salud y comportamiento de una API.
+**Definition:** Seguimiento del rendimiento, uptime y fallos de una API.
 
-Se suelen medir:
+**Metrics:**
 
-- tiempo de respuesta
-- errores
-- trafico
-- disponibilidad
-
-Esto ayuda a detectar problemas antes de que escalen.
+- response time
+- error rate
+- traffic volume
+- availability
 
 ## 73. API Monitoring Tools
 
-Herramientas comunes:
+**Common Tools:**
 
-- `Prometheus`
-- `Grafana`
-- `Datadog`
-- `New Relic`
-- `Elastic`
-
-Cada una ayuda a ver metricas, logs y alertas.
+- New Relic
+- Datadog
+- Prometheus
+- Grafana
+- ELK Stack
 
 ## 74. Webhook
 
-Un `Webhook` es una llamada HTTP automatica que un sistema envia a otro cuando ocurre un evento.
+**Definition:** Un webhook permite que un servidor envie datos en tiempo real a otro sistema automaticamente cuando ocurre un evento.
 
-Ejemplo:
-cuando un pago se confirma, el proveedor envia un webhook a tu API.
+**Difference from API:**
 
-Es un modelo basado en eventos.
+- API = el cliente pide datos
+- Webhook = el servidor empuja datos
 
 ## 75. Webhook Real-Time Example
 
-Ejemplo real:
+**Payment Gateway Scenario:**
 
-1. Stripe confirma un pago
-2. Stripe envia `POST /webhooks/payment`
-3. tu API valida la firma
-4. actualiza el pedido
-5. envia confirmacion al usuario
+- pago exitoso
+- pago fallido
+- reembolso procesado
 
-La clave es validar siempre que el webhook sea autentico.
+Ejemplo de flujo:
+
+Stripe envia un webhook y tu servidor actualiza el estado del pedido.
 
 ## Resumen rapido
 
-- asegurar API = varias capas
+- secure API = varias capas de defensa
 - login flow = autenticar y emitir token
-- error handling = respuestas claras y consistentes
-- middleware = logica entre request y response
+- error handling = respuestas claras y seguras
+- middleware = logica intermedia
 - schema validation = validar estructura
-- monitoring = observar salud de la API
-- webhook = evento enviado entre sistemas
+- monitoring = observar salud
+- webhook = eventos automaticos entre sistemas
 
 ## Siguiente paso
 
-La siguiente parte entra en colas, asincronia, despliegues y problemas tipicos de produccion.
+La siguiente parte entra en eventos, colas, asincronia, despliegues y control de concurrencia.

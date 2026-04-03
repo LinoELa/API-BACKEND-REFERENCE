@@ -15,158 +15,144 @@
 
 ## Como leer esta guia
 
-Esta ultima parte junta testing, documentacion, compatibilidad y debugging.
-Son temas muy utiles para pensar una API como producto y no solo como codigo.
+Esta ultima parte recoge testing, contratos, sandbox, debugging y diseno de entrevista.
+Es el cierre natural del recorrido del PDF.
 
 ## 91. Automated API Testing
 
-`Automated API Testing` consiste en probar la API con tests que corren solos.
+**Tools:**
 
-Se puede validar:
+- Postman automation
+- Jest
+- Mocha
+- Newman
+- RestAssured
 
-- respuestas
-- status codes
-- errores
-- contratos
-- seguridad basica
+**Types:**
 
-Esto reduce regresiones cuando el sistema cambia.
+- unit tests
+- integration tests
+- load tests
 
 ## 92. Schema Registry
 
-Un `Schema Registry` es un lugar central donde se almacenan y versionan esquemas de mensajes o eventos.
+**Definition:** Un `schema registry` es un repositorio central para esquemas de API o eventos.
 
-Se usa mucho en arquitecturas con eventos.
+**Used in:**
 
-Ventaja:
-permite controlar cambios y compatibilidad entre productores y consumidores.
+- microservices
+- sistemas event-driven
+
+Sirve para mantener estructuras consistentes.
 
 ## 93. Documenting APIs for Frontend Teams
 
-Para equipos frontend, la documentacion debe ser clara y practica.
+**Best Practices:**
 
-Conviene incluir:
-
-- endpoints
-- ejemplos reales
-- errores posibles
-- autenticacion
-- limites
-- casos edge
-
-Buena documentacion reduce dudas y bloqueos.
+- Swagger / OpenAPI
+- examples
+- sample requests y responses
+- error scenarios
+- authentication guide
 
 ## 94. Backward Compatibility
 
-`Backward Compatibility` significa que cambios nuevos no rompen clientes antiguos.
+**Strategies:**
 
-Ejemplos de cambios mas seguros:
-
+- no eliminar campos existentes
 - agregar campos opcionales
-- mantener endpoints viejos por un tiempo
-- deprecar antes de eliminar
-
-Es clave en APIs usadas por otros equipos o apps en produccion.
+- versioning
+- politica de deprecacion
 
 ## 95. API Sandbox
 
-Un `API Sandbox` es un entorno seguro de prueba.
+**Definition:** Un entorno de pruebas donde los desarrolladores pueden experimentar sin riesgo.
 
-Sirve para:
+**Real-time Example:**
 
-- probar integraciones
-- hacer experimentos sin afectar produccion
-- dar acceso a terceros de forma controlada
-
-Es muy comun en APIs de pagos y servicios externos.
+- PayPal Sandbox
+- Stripe Test Mode
 
 ## 96. Rate Limit Exceeded Error
 
-Este error aparece cuando un cliente supera el limite permitido de peticiones.
+**Definition:** Ocurre cuando el usuario supera el limite permitido de requests.
 
-Suele responder con:
+**HTTP Code:**
 
 ```http
 429 Too Many Requests
 ```
 
-Buena practica:
-informar cuanto tiempo debe esperar el cliente antes de reintentar.
-
 ## 97. Debugging Production API Issues
 
-Depurar problemas en produccion suele requerir:
+**Techniques:**
 
 - logs
-- metricas
-- traces
-- correlation ids
-- revision de despliegues recientes
-
-La idea es encontrar rapidamente donde esta fallando el flujo real.
+- monitoring
+- distributed tracing
+- alerts
+- error tracking como Sentry
 
 ## 98. Distributed Tracing
 
-`Distributed Tracing` permite seguir una request a traves de varios servicios.
+**Definition:** Seguimiento de una request a traves de varios servicios.
 
-Ejemplo:
-una solicitud pasa por gateway, auth, orders y payments.
+**Real-time Example:**
 
-El tracing ayuda a ver:
+```text
+Client -> API Gateway -> Auth Service -> Order Service -> Payment Service
+```
 
-- donde fallo
-- cuanto tardo cada paso
-- que servicio fue el cuello de botella
+Se usa mucho para debugging en microservicios.
 
 ## 99. API-First Approach
 
-`API-First Approach` significa disenar primero la API antes de implementar el codigo.
+**Definition:** Disenar la API antes de construir frontend y backend.
 
-Normalmente se define antes:
+**Benefits:**
 
-- contrato
-- endpoints
-- esquemas
-- errores
-- documentacion
-
-Esto mejora alineacion entre backend, frontend y QA.
+- mejor colaboracion
+- contratos claros
+- desarrollo paralelo
+- mejor escalabilidad
 
 ## 100. Designing a Login API
 
-Si te piden disenar una Login API en entrevista, conviene pensar en:
+**Interview Task Steps:**
 
-- `POST /auth/login`
-- validacion de credenciales
-- respuesta con tokens
-- manejo de errores
-- rate limiting
-- logs
-- refresh token
-- seguridad de password
+1. definir endpoint `POST /login`
+2. validar input
+3. autenticar usuario
+4. generar JWT
+5. devolver token
+6. almacenamiento seguro
+7. error handling
+8. logging
+9. rate limiting
 
-Ejemplo de respuesta:
+**Sample Response:**
 
 ```json
 {
-  "accessToken": "token",
-  "refreshToken": "token"
+  "token": "eyJhbGciOiJIUzI1NiIs...",
+  "expiresIn": 900,
+  "user": {
+    "id": 101,
+    "name": "Mounika"
+  }
 }
 ```
 
-No es solo hacer login, sino disenar un flujo seguro y mantenible.
-
 ## Resumen rapido
 
-- automated testing = pruebas automaticas
+- automated testing = comprobar sin hacerlo manualmente
 - schema registry = control central de esquemas
 - backward compatibility = no romper clientes antiguos
-- sandbox = entorno de pruebas
-- 429 = limite excedido
-- distributed tracing = seguir requests entre servicios
-- API-first = definir contrato antes de implementar
+- sandbox = entorno seguro de pruebas
+- 429 = limite de trafico superado
+- distributed tracing = seguir una request entre servicios
+- API-first = disenar el contrato antes del codigo
 
 ## Cierre de seccion
 
-Con `Q61-Q100` queda completada la parte avanzada del material.
-Desde aqui ya tienes una base bastante solida para estudiar APIs desde lo basico hasta escenarios de produccion.
+Con `Q61-Q100` la parte avanzada queda tambien mucho mas alineada con el PDF, incluyendo ejemplos y escenarios reales.

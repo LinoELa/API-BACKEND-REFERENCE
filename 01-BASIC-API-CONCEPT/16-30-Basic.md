@@ -1,4 +1,4 @@
-﻿# API Basics - Q16 to Q30
+# API Basics - Q16 to Q30
 
 ## Indice de contenidos
 
@@ -7,11 +7,11 @@
 - [18. Accept Header](#18-accept-header)
 - [19. Query Parameter](#19-query-parameter)
 - [20. Path Parameter](#20-path-parameter)
-- [21. Difference between query and path parameters](#21-difference-between-query-and-path-parameters)
+- [21. Difference between Query and Path Parameters](#21-difference-between-query-and-path-parameters)
 - [22. API Documentation](#22-api-documentation)
 - [23. Swagger / OpenAPI](#23-swagger--openapi)
 - [24. API Versioning](#24-api-versioning)
-- [25. Why versioning is important](#25-why-versioning-is-important)
+- [25. Why Versioning Matters](#25-why-versioning-matters)
 - [26. REST Constraint](#26-rest-constraint)
 - [27. Cache](#27-cache)
 - [28. CORS](#28-cors)
@@ -20,256 +20,353 @@
 
 ## Como leer esta guia
 
-Esta segunda parte completa la base de API Basics.
-Aqui aparecen conceptos muy usados en desarrollo backend, frontend, testing y seguridad.
+Esta segunda parte mantiene el estilo del PDF original: definicion, ejemplo real y pista de entrevista cuando aporta valor.
+Aqui ya aparecen temas muy comunes en proyectos reales y entrevistas.
 
 ## 16. Headers
 
-Los `headers` son metadatos que viajan en una solicitud o en una respuesta HTTP.
-Sirven para enviar informacion adicional sobre la comunicacion.
+**Definition:** Los `headers` son pares `key-value` que viajan en una request o response HTTP y contienen metadatos sobre esa comunicacion.
 
-Ejemplos comunes:
+No suelen ser el dato principal, pero le dicen al servidor o al cliente como tratar la informacion.
 
-- `Content-Type`
-- `Accept`
-- `Authorization`
-- `Cache-Control`
+**Real-time Example:** Despues de hacer login, una app puede pedir el perfil asi:
 
-Idea simple: los headers no suelen ser el dato principal, pero ayudan a explicar como debe tratarse ese mensaje.
+```http
+GET /api/user/profile
+Authorization: Bearer eyJhbGciOiJIUzI1Ni...
+Content-Type: application/json
+Accept: application/json
+```
+
+Lectura rapida:
+
+- `Authorization` = quien es el usuario
+- `Content-Type` = formato de los datos enviados
+- `Accept` = formato esperado de la respuesta
+
+**Interview Tip:** Los headers se usan mucho para autenticacion, tipo de contenido, cache y datos del cliente.
 
 ## 17. Content-Type
 
-`Content-Type` es un header que indica el formato del contenido que se esta enviando.
+**Definition:** `Content-Type` indica el formato del body que se esta enviando o devolviendo.
 
-Ejemplos comunes:
+**Real-time Examples:**
 
-- `application/json`
-- `text/html`
-- `multipart/form-data`
-
-Ejemplo:
+1. Envio de JSON
 
 ```http
 Content-Type: application/json
 ```
 
-Si envias un body en JSON, este header le dice al servidor que debe interpretarlo como JSON.
+```json
+{
+  "email": "user@gmail.com",
+  "password": "123456"
+}
+```
+
+2. Subida de archivos
+
+```http
+Content-Type: multipart/form-data
+```
+
+**Why it matters:** Si mandas JSON y el `Content-Type` falta o es incorrecto, la request puede fallar.
+
+**Interview Tip:** Ajustalo bien en `POST`, `PUT` y `PATCH`.
 
 ## 18. Accept Header
 
-El header `Accept` indica que tipo de respuesta espera recibir el cliente.
+**Definition:** `Accept` indica al servidor que formato de respuesta espera el cliente.
 
-Ejemplo:
+**Real-time Example - Mobile App:**
 
 ```http
+GET /api/products
 Accept: application/json
 ```
 
-Esto significa que el cliente prefiere recibir la respuesta en formato JSON.
+Respuesta:
 
-Diferencia simple:
+```json
+{
+  "id": 101,
+  "name": "Laptop",
+  "price": 50000
+}
+```
 
-- `Content-Type` = formato de lo que envio
-- `Accept` = formato de lo que quiero recibir
+**Real-time Example - Browser:**
+
+```http
+Accept: text/html
+```
+
+En ese caso, el servidor podria responder con HTML.
+
+**Interview Tip:**
+
+- `Accept` = formato esperado de respuesta
+- `Content-Type` = formato de datos enviados
 
 ## 19. Query Parameter
 
-Un `query parameter` es un parametro que se envia en la URL despues del signo `?`.
+**Definition:** Los `query parameters` son pares `key-value` que se agregan a la URL despues de `?` y se usan para filtrar, ordenar, buscar o paginar.
 
-Se usa mucho para:
-
-- filtrar
-- buscar
-- ordenar
-- paginar
-
-Ejemplo:
+**Real-time Example - E-commerce Website:**
 
 ```http
-GET /products?category=books&page=2
+GET /api/products?category=mobile&price=low&page=2
 ```
 
-En este caso:
+Lectura rapida:
 
-- `category=books`
-- `page=2`
+- `category=mobile` = filtro
+- `price=low` = criterio de orden o seleccion
+- `page=2` = paginacion
 
-son query parameters.
+**Interview Tip:** Normalmente son opcionales y sirven para modificar la consulta.
 
 ## 20. Path Parameter
 
-Un `path parameter` es un valor que forma parte directa de la ruta del endpoint.
-Normalmente identifica un recurso especifico.
+**Definition:** Los `path parameters` son variables dentro de la propia ruta y suelen identificar un recurso concreto.
 
-Ejemplo:
-
-```http
-GET /users/25
-```
-
-Aqui, `25` es un path parameter porque indica el usuario concreto que queremos consultar.
-
-## 21. Difference between query and path parameters
-
-La diferencia principal es el uso.
-
-- `path parameter`: identifica un recurso especifico
-- `query parameter`: modifica o afina la consulta
-
-Ejemplo:
+**Real-time Examples:**
 
 ```http
-GET /users/25
-GET /users?role=admin
+GET /api/users/25
+DELETE /api/orders/789
 ```
 
-En el primer caso buscas un usuario concreto.
-En el segundo caso buscas una lista filtrada de usuarios.
+Lectura rapida:
+
+- obtener el usuario `25`
+- borrar el pedido `789`
+
+**Interview Tip:** Normalmente son obligatorios y representan identificadores unicos.
+
+## 21. Difference between Query and Path Parameters
+
+| Feature | Path Parameter | Query Parameter |
+| --- | --- | --- |
+| Purpose | Identificar recurso | Filtrar o modificar respuesta |
+| Mandatory | Yes | No |
+| Position | Dentro de la ruta | Despues de `?` |
+| Example | `/users/10` | `/users?role=admin` |
+
+**Real-time Example:**
+
+```http
+GET /api/users/10?active=true
+```
+
+Lectura rapida:
+
+- `10` = path param
+- `active=true` = query param
 
 ## 22. API Documentation
 
-La `API documentation` es la documentacion que explica como usar una API.
+**Definition:** La documentacion de API explica como usar una API: endpoints, formatos de request, formatos de response y errores.
 
-Normalmente incluye:
+**Real-time Examples:**
 
-- endpoints disponibles
-- metodos HTTP
-- parametros
-- headers
-- ejemplos de request y response
-- codigos de estado
-- autenticacion
+- `Stripe API docs` = pagos
+- `Google Maps API docs` = ubicacion y mapas
+- `Twitter API docs` = tweets y timelines
 
-Una buena documentacion hace que la API sea mas facil de entender, probar e integrar.
+**Interview Tip:** Una buena documentacion reduce confusion y acelera integraciones.
 
 ## 23. Swagger / OpenAPI
 
-`OpenAPI` es una especificacion para describir APIs de forma estandar.
-`Swagger` es un conjunto de herramientas que trabaja con esa especificacion.
+**Definition:** `Swagger` u `OpenAPI` es una especificacion estandar para documentar APIs REST de forma clara e interactiva.
 
-Con Swagger u OpenAPI puedes:
+**Real-time Scenario:** Un desarrollador frontend abre Swagger UI y:
 
-- documentar endpoints
-- ver ejemplos
-- probar solicitudes desde una interfaz
-- generar clientes o codigo automaticamente
+- ve todos los endpoints
+- prueba APIs sin Postman
+- entiende formatos de request y response
 
-Idea simple: OpenAPI define la estructura y Swagger ayuda a visualizarla y usarla.
+**Benefits:**
+
+- testing interactivo
+- documentacion generada automaticamente
+- generacion de SDKs o clientes
 
 ## 24. API Versioning
 
-`Versioning in API` significa manejar versiones distintas de una API para poder introducir cambios sin romper integraciones existentes.
+**Definition:** El versionado de API consiste en mantener varias versiones para introducir cambios sin romper a los clientes existentes.
 
-Ejemplo:
+**Real-time Example:**
 
 ```http
 /api/v1/users
 /api/v2/users
 ```
 
-Asi diferentes clientes pueden seguir usando la version que soportan.
+Lectura rapida:
 
-## 25. Why versioning is important
+- `v1` = apps antiguas
+- `v2` = apps nuevas
 
-El versionado es importante porque permite evolucionar una API sin afectar inmediatamente a todos los consumidores.
+**Interview Tip:** El versionado facilita cambios graduales y compatibilidad hacia atras.
 
-Sirve para:
+## 25. Why Versioning Matters
 
-- cambiar estructuras de datos
-- mejorar endpoints
-- eliminar campos antiguos
-- corregir disenos anteriores
+**Definition:** El versionado permite que aplicaciones existentes sigan funcionando aunque la API cambie.
 
-Sin versionado, un cambio importante puede romper aplicaciones que ya dependen de esa API.
+**Real-time Problem:**
+
+Version antigua:
+
+```json
+{"name": "John"}
+```
+
+Version nueva:
+
+```json
+{"fullName": "John Doe"}
+```
+
+Sin versionado, las apps viejas se rompen.
+Con versionado, la migracion es segura.
 
 ## 26. REST Constraint
 
-Una `REST constraint` es una de las reglas o restricciones del estilo REST.
+**Definition:** Las `REST constraints` son reglas que definen como debe comportarse una API REST.
 
-Las mas conocidas son:
+**Key Constraints:**
 
-- cliente-servidor
-- stateless
-- cacheable
-- uniform interface
-- layered system
-- code on demand (opcional)
+1. `Client-Server`
+2. `Stateless`
+3. `Cacheable`
+4. `Uniform Interface`
+5. `Layered System`
 
-Estas restricciones ayudan a que una API sea mas consistente, escalable y facil de mantener.
+**Real-time Example:**
+
+```text
+Frontend React app -> Backend Node API -> Database
+```
+
+Cada capa cumple una funcion y puede evolucionar de forma mas independiente.
 
 ## 27. Cache
 
-La `cache` es un mecanismo para guardar temporalmente respuestas o datos que se usan con frecuencia.
+**Definition:** La `cache` es almacenamiento temporal de datos usados con frecuencia para mejorar el rendimiento y reducir carga del servidor.
 
-Su objetivo es mejorar el rendimiento y reducir trabajo innecesario del servidor.
+**Real-time Example - Weather App:**
 
-Ejemplo:
-si una respuesta cambia poco, puede guardarse para no recalcularla en cada peticion.
+- primera request = llamada real a la API, mas lenta
+- siguientes requests = datos cacheados, mas rapidos
 
-Beneficios:
-
-- respuestas mas rapidas
-- menos carga en el servidor
-- mejor experiencia para el usuario
+**Interview Tip:** Cache mejora velocidad, escalabilidad y experiencia de usuario.
 
 ## 28. CORS
 
-`CORS` significa `Cross-Origin Resource Sharing`.
-Es un mecanismo de seguridad del navegador que controla si una pagina puede hacer peticiones a un dominio diferente.
+**Definition:** `CORS` (`Cross-Origin Resource Sharing`) permite que un servidor indique que dominios pueden acceder a sus recursos.
 
-Ejemplo:
-una app en `http://localhost:3000` quiere acceder a una API en `http://localhost:5000`.
-Eso es otro origen, y el servidor debe permitirlo con CORS.
+**Real-time Scenario:**
+
+Frontend:
+
+```text
+https://myapp.com
+```
+
+Backend:
+
+```text
+https://api.myapp.com
+```
+
+Header enviado por el servidor:
+
+```http
+Access-Control-Allow-Origin: https://myapp.com
+```
+
+**Interview Tip:** CORS es una restriccion del navegador, no una regla de negocio del backend.
 
 ## 29. Same-Origin Policy
 
-La `same-origin policy` es una politica de seguridad del navegador.
-Impide que una pagina web acceda libremente a recursos de otro origen distinto.
+**Definition:** Es una regla de seguridad del navegador que impide que una pagina acceda libremente a datos de otro origen.
 
-Un origen cambia si cambia:
+**Origin =**
 
 - protocolo
 - dominio
 - puerto
 
-Ejemplo:
-`https://app.com` y `https://api.app.com` no son exactamente el mismo origen.
+**Real-time Example:**
 
-CORS existe precisamente para relajar esa restriccion de forma controlada.
+Bloqueado:
+
+```text
+https://siteA.com -> https://siteB.com
+```
+
+Permitido:
+
+```text
+https://siteA.com -> https://siteA.com/api
+```
 
 ## 30. API Authentication
 
-`API authentication` es el proceso de verificar quien esta haciendo la solicitud.
+**Definition:** La autenticacion de API verifica quien esta haciendo la request antes de permitir acceso.
 
-Sirve para saber si el cliente tiene permiso para acceder a una API o a ciertos recursos.
+**Common Methods and Real-time Examples**
 
-Metodos comunes:
+1. API Keys
 
-- API Key
-- Bearer Token
-- JWT
-- OAuth
-- Basic Auth
+```http
+GET /api/data?api_key=abc123
+```
 
-Idea clave: autenticacion responde a la pregunta "quien eres?".
-Despues suele venir la autorizacion, que responde "que puedes hacer?".
+Uso comun: APIs publicas como mapas o clima.
+
+2. JWT Tokens
+
+```http
+Authorization: Bearer eyJhbGciOiJIUzI1Ni...
+```
+
+Uso comun: sistemas con login.
+
+3. OAuth
+
+Ejemplo: login con Google o Facebook.
+
+4. Basic Authentication
+
+```http
+Authorization: Basic base64(username:password)
+```
+
+Uso comun: sistemas internos o legacy.
+
+**Interview Tip:**
+
+- authentication = identidad
+- authorization = permisos
 
 ## Resumen rapido
 
-- headers = informacion adicional del mensaje
-- Content-Type = formato del contenido enviado
-- Accept = formato esperado en la respuesta
-- query parameter = filtra o modifica la consulta
-- path parameter = identifica un recurso concreto
-- API documentation = guia para usar la API
-- Swagger/OpenAPI = estandar y herramientas para documentar APIs
-- versioning = manejo de versiones sin romper clientes
-- cache = guardar respuestas para mejorar rendimiento
-- CORS = control de acceso entre origenes distintos
+- headers = metadatos de la comunicacion
+- `Content-Type` = formato del contenido enviado
+- `Accept` = formato esperado en la respuesta
+- query params = filtros y modificadores
+- path params = identificadores de recursos
+- API docs = guia de uso de la API
+- Swagger / OpenAPI = documentacion y testing interactivo
+- versioning = evolucionar sin romper clientes
+- cache = mejorar rendimiento
+- CORS = acceso entre origenes controlado
 - same-origin policy = regla de seguridad del navegador
-- API authentication = verificar identidad del cliente
+- API authentication = verificar identidad
 
 ## Cierre de seccion
 
-Con `Q1-Q30` ya queda completa la base de `API Basics`.
-A partir de aqui ya se puede pasar a temas mas practicos como autenticacion, testing avanzado, diseno de endpoints y seguridad.
+Con `Q1-Q30` queda una version de `Basic` mucho mas alineada con el PDF, incluyendo ejemplos y escenarios de uso reales.

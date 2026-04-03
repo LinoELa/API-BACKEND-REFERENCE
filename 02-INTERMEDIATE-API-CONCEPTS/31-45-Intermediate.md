@@ -20,221 +20,222 @@
 
 ## Como leer esta guia
 
-Esta parte conecta la base de APIs con problemas reales de seguridad, acceso, control de trafico y manejo de datos.
-La idea es que no solo memorices definiciones, sino que entiendas cuando se usan.
+Esta parte mantiene el estilo del PDF: definicion, uso real, y puntos clave utiles en entrevista.
+Aqui ya entramos en autenticacion, control de trafico y manejo mas serio de datos.
 
 ## 31. Authentication vs Authorization
 
-`Authentication` significa comprobar quien eres.
-`Authorization` significa comprobar que puedes hacer.
+**Authentication** responde a la pregunta: `Who are you?`
 
-Ejemplo:
+Sirve para verificar la identidad de un usuario o sistema.
 
-- autenticacion: iniciar sesion con usuario y password
-- autorizacion: decidir si ese usuario puede borrar un recurso
+**Authorization** responde a la pregunta: `What are you allowed to do?`
 
-Idea clave:
+Sirve para determinar permisos despues de autenticar.
 
-- authentication = identidad
-- authorization = permisos
+**Real-time Scenario - Company HR System:**
+
+1. el empleado inicia sesion
+2. la autenticacion se valida
+3. intenta acceder a datos de nomina
+4. si es HR Manager, entra
+5. si es intern, recibe `403 Forbidden`
 
 ## 32. JWT
 
-`JWT` significa `JSON Web Token`.
-Es un token compacto que suele usarse para autenticar usuarios entre cliente y servidor.
+**Definition:** `JWT` (`JSON Web Token`) es un token compacto y seguro para transmitir informacion entre cliente y servidor.
 
-Se envia normalmente en el header `Authorization` y permite identificar al usuario sin guardar sesion en memoria del servidor.
+**Why JWT is used:**
 
-Ejemplo:
+- autenticacion stateless
+- no necesita guardar sesion en servidor
+- escala bien en microservicios
 
-```http
-Authorization: Bearer eyJhbGciOi...
-```
+**Real-time Scenario:** Un usuario inicia sesion en una tienda online, recibe un JWT y luego lo usa para acceder a pedidos, carrito y perfil.
 
 ## 33. JWT Structure
 
 Un JWT tiene tres partes separadas por puntos:
 
-- `header`
-- `payload`
-- `signature`
-
-Ejemplo:
-
 ```text
-xxxxx.yyyyy.zzzzz
+Header.Payload.Signature
 ```
 
-El `header` indica el algoritmo.
-El `payload` contiene datos como `userId` o `role`.
-La `signature` sirve para verificar que el token no fue alterado.
+**Details:**
+
+- `Header` = tipo de token y algoritmo
+- `Payload` = claims o datos del usuario
+- `Signature` = verifica que el token no fue alterado
+
+**Example Payload:**
+
+```json
+{
+  "userId": 123,
+  "role": "admin",
+  "exp": 1700000000
+}
+```
 
 ## 34. Bearer Token
 
-Un `Bearer token` es un token que da acceso al recurso a quien lo posea.
-Se manda normalmente asi:
+**Definition:** Un `Bearer token` es un access token que se envia en headers HTTP para autenticar requests.
+
+**Real-time Usage:**
 
 ```http
-Authorization: Bearer <token>
+GET /api/orders
+Authorization: Bearer eyJhbGciOiJIUzI1NiIs...
 ```
 
-El servidor lee ese token y decide si la peticion es valida.
+**Why "Bearer"?**
 
-Idea importante: si alguien roba el token, puede usarlo mientras siga siendo valido.
+Quien tenga el token puede usar el recurso, asi que debe protegerse bien.
 
 ## 35. JWT Real-Time Flow
 
-Flujo basico en tiempo real:
+**Step-by-step Login Flow:**
 
-1. el usuario hace login
-2. el servidor valida credenciales
-3. el servidor genera un JWT
-4. el cliente guarda el token
-5. el cliente envia el token en cada request protegida
-6. el servidor valida el JWT y responde
+1. el usuario manda credenciales con `POST /login`
+2. el servidor las valida
+3. el servidor genera el JWT
+4. el token vuelve al frontend
+5. el frontend lo guarda en `localStorage` o cookies
+6. el token se envia en cada request protegida
 
-Ejemplo:
-
-- login en `/auth/login`
-- respuesta con `accessToken`
-- luego `GET /profile` usando `Authorization: Bearer ...`
+**Why this matters in interviews:** Demuestra que entiendes el flujo de autenticacion stateless.
 
 ## 36. OAuth
 
-`OAuth` es un protocolo de autorizacion.
-Permite que una aplicacion acceda a recursos de un usuario sin pedir directamente su password.
+**Definition:** `OAuth` es un framework de autorizacion que permite a apps de terceros acceder a datos del usuario sin exponer passwords.
 
-Ejemplo comun:
+**Real-time Scenario - Login with Google:**
 
-- iniciar sesion con Google
-- iniciar sesion con GitHub
-
-Idea simple: OAuth delega acceso entre sistemas de forma controlada.
+- la app nunca ve tu password de Google
+- Google emite un access token
+- la app accede a perfil y email con permiso
 
 ## 37. Refresh Token
 
-Un `Refresh Token` sirve para obtener un nuevo `access token` cuando el actual expira.
+**Definition:** Un `refresh token` sirve para obtener un nuevo access token sin que el usuario tenga que volver a iniciar sesion.
 
-Uso comun:
+**Real-time Scenario:**
 
-- `access token`: dura poco
-- `refresh token`: dura mas
-
-Ventaja:
-mejora la seguridad sin obligar al usuario a iniciar sesion cada pocos minutos.
+- el access token expira en 15 minutos
+- el refresh token dura 7 dias
+- el usuario sigue trabajando sin reloguearse cada poco tiempo
 
 ## 38. API Rate Limiting
 
-`API Rate Limiting` es una tecnica para limitar cuantas peticiones puede hacer un cliente en un tiempo determinado.
+**Definition:** Restringe cuantas requests puede hacer un cliente en una ventana de tiempo concreta.
 
-Ejemplo:
+**Real-time Example:**
 
-- 100 requests por minuto
-- 1000 requests por hora
+```text
+100 requests per minute per user
+```
 
-Se usa para proteger la API del abuso o del exceso de trafico.
+**Why needed:**
+
+- prevenir abuso
+- proteger recursos del servidor
+- garantizar uso justo
 
 ## 39. Why Rate Limiting Matters
 
-El rate limiting es importante porque ayuda a:
+**Real-time Problem:** Una API publica sin limites puede sufrir:
 
-- prevenir abuso
-- reducir ataques automatizados
-- proteger recursos del servidor
-- mantener un servicio estable para todos
+- ataques de bots
+- intentos de DDoS
+- caidas del servidor
 
-Sin limites, un cliente podria saturar toda la API.
+**Common Solution:**
+
+```http
+429 Too Many Requests
+```
 
 ## 40. Idempotency
 
-`Idempotency` significa que repetir una misma operacion varias veces produce el mismo resultado final.
+**Definition:** Una operacion es idempotente si ejecutarla varias veces produce el mismo resultado final.
 
-Ejemplo:
-si borras el usuario `10` una vez o dos veces, el estado final sigue siendo que ese usuario ya no existe.
+**Real-time Example - Payments:**
 
-Es un concepto muy importante cuando hay reintentos o fallos de red.
+```http
+POST /payments
+```
+
+con una `idempotency-key`
+
+Si la request se reintenta por un fallo de red, el pago solo se procesa una vez.
 
 ## 41. Idempotent HTTP Methods
 
-Los metodos HTTP normalmente considerados idempotentes son:
+**Idempotent Methods:**
 
 - `GET`
 - `PUT`
 - `DELETE`
-- `HEAD`
-- `OPTIONS`
 
-`POST` normalmente no es idempotente, porque repetirlo puede crear varios recursos.
+**Not Idempotent:**
+
+- `POST`, porque puede crear recursos nuevos cada vez
 
 ## 42. Pagination
 
-La `pagination` consiste en dividir grandes listas de datos en bloques mas pequenos.
+**Definition:** La paginacion divide datasets grandes en partes pequenas para mejorar rendimiento.
 
-En vez de devolver 10.000 registros de golpe, la API devuelve una parte.
+**Real-time Scenario - Instagram Feed:**
 
-Ventajas:
-
-- menor carga
-- respuestas mas rapidas
-- mejor experiencia de uso
+- carga 10 posts al principio
+- al hacer scroll, carga la siguiente pagina
 
 ## 43. Pagination Examples
 
-Ejemplo con `page` y `limit`:
+**Example:**
 
 ```http
-GET /products?page=2&limit=20
+GET /api/posts?page=2&limit=20
 ```
 
-Ejemplo con cursor:
+**Alternative Approaches:**
 
-```http
-GET /messages?cursor=abc123
-```
-
-Tipos comunes:
-
-- paginacion por pagina
-- paginacion por cursor
 - paginacion por offset
+- paginacion por cursor, mejor para grandes volumenes
 
 ## 44. Filtering
 
-`Filtering` significa reducir resultados segun una condicion.
+**Definition:** `Filtering` restringe las respuestas segun una condicion.
 
-Ejemplo:
+**Real-time Example:**
 
 ```http
-GET /users?role=admin
+GET /orders?status=delivered&payment=completed
 ```
-
-La API solo devuelve usuarios que cumplan ese criterio.
 
 ## 45. Sorting
 
-`Sorting` significa ordenar los resultados.
+**Definition:** `Sorting` organiza la respuesta en un orden especifico.
 
-Ejemplo:
+**Real-time Example:**
 
 ```http
 GET /products?sort=price&order=asc
 ```
 
-Con esto puedes devolver datos ordenados por precio, fecha, nombre u otro campo.
-
 ## Resumen rapido
 
-- authentication = quien eres
-- authorization = que puedes hacer
-- JWT = token compacto de autenticacion
-- bearer token = token enviado en el header
-- refresh token = renueva acceso sin nuevo login
-- rate limiting = limite de peticiones
-- idempotency = repetir no cambia el resultado final
+- authentication = verificar identidad
+- authorization = verificar permisos
+- JWT = token compacto y stateless
+- bearer token = token en headers
+- refresh token = renovar acceso
+- rate limiting = limitar trafico
+- idempotency = no duplicar efectos
 - pagination = dividir resultados
-- filtering = filtrar datos
-- sorting = ordenar datos
+- filtering = filtrar
+- sorting = ordenar
 
 ## Siguiente paso
 
-La siguiente parte de esta seccion entra en arquitectura, estilos de API, pruebas y rendimiento.
+La segunda parte de `Intermediate` entra en arquitectura, estilos de API, mocking, contratos y latencia.
