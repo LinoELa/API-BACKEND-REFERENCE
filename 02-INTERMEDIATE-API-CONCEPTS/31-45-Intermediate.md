@@ -1,4 +1,4 @@
-# Intermediate API Concepts - Q31 to Q45
+﻿# Intermediate API Concepts - Q31 to Q45
 
 ## Indice de contenidos
 
@@ -25,15 +25,15 @@ Aqui ya entramos en autenticacion, control de trafico y manejo mas serio de dato
 
 ## 31. Authentication vs Authorization
 
-**Authentication** responde a la pregunta: `Who are you?`
+Authentication responde a la pregunta: `Who are you?`
 
 Sirve para verificar la identidad de un usuario o sistema.
 
-**Authorization** responde a la pregunta: `What are you allowed to do?`
+Authorization responde a la pregunta: `What are you allowed to do?`
 
 Sirve para determinar permisos despues de autenticar.
 
-**Real-time Scenario - Company HR System:**
+Real-time Scenario - Company HR System:
 
 1. el empleado inicia sesion
 2. la autenticacion se valida
@@ -43,15 +43,15 @@ Sirve para determinar permisos despues de autenticar.
 
 ## 32. JWT
 
-**Definition:** `JWT` (`JSON Web Token`) es un token compacto y seguro para transmitir informacion entre cliente y servidor.
+`JWT` (`JSON Web Token`) es un token compacto y seguro para transmitir informacion entre cliente y servidor.
 
-**Why JWT is used:**
+Why JWT is used:
 
 - autenticacion stateless
 - no necesita guardar sesion en servidor
 - escala bien en microservicios
 
-**Real-time Scenario:** Un usuario inicia sesion en una tienda online, recibe un JWT y luego lo usa para acceder a pedidos, carrito y perfil.
+Real-time Scenario: Un usuario inicia sesion en una tienda online, recibe un JWT y luego lo usa para acceder a pedidos, carrito y perfil.
 
 ## 33. JWT Structure
 
@@ -61,13 +61,13 @@ Un JWT tiene tres partes separadas por puntos:
 Header.Payload.Signature
 ```
 
-**Details:**
+Details:
 
 - `Header` = tipo de token y algoritmo
 - `Payload` = claims o datos del usuario
 - `Signature` = verifica que el token no fue alterado
 
-**Example Payload:**
+Example Payload:
 
 ```json
 {
@@ -79,22 +79,22 @@ Header.Payload.Signature
 
 ## 34. Bearer Token
 
-**Definition:** Un `Bearer token` es un access token que se envia en headers HTTP para autenticar requests.
+Un `Bearer token` es un access token que se envia en headers HTTP para autenticar requests.
 
-**Real-time Usage:**
+Real-time Usage:
 
 ```http
 GET /api/orders
 Authorization: Bearer eyJhbGciOiJIUzI1NiIs...
 ```
 
-**Why "Bearer"?**
+Why "Bearer"?
 
 Quien tenga el token puede usar el recurso, asi que debe protegerse bien.
 
 ## 35. JWT Real-Time Flow
 
-**Step-by-step Login Flow:**
+Step-by-step Login Flow:
 
 1. el usuario manda credenciales con `POST /login`
 2. el servidor las valida
@@ -103,13 +103,13 @@ Quien tenga el token puede usar el recurso, asi que debe protegerse bien.
 5. el frontend lo guarda en `localStorage` o cookies
 6. el token se envia en cada request protegida
 
-**Why this matters in interviews:** Demuestra que entiendes el flujo de autenticacion stateless.
+Why this matters in interviews: Demuestra que entiendes el flujo de autenticacion stateless.
 
 ## 36. OAuth
 
-**Definition:** `OAuth` es un framework de autorizacion que permite a apps de terceros acceder a datos del usuario sin exponer passwords.
+`OAuth` es un framework de autorizacion que permite a apps de terceros acceder a datos del usuario sin exponer passwords.
 
-**Real-time Scenario - Login with Google:**
+Real-time Scenario - Login with Google:
 
 - la app nunca ve tu password de Google
 - Google emite un access token
@@ -117,9 +117,9 @@ Quien tenga el token puede usar el recurso, asi que debe protegerse bien.
 
 ## 37. Refresh Token
 
-**Definition:** Un `refresh token` sirve para obtener un nuevo access token sin que el usuario tenga que volver a iniciar sesion.
+Un `refresh token` sirve para obtener un nuevo access token sin que el usuario tenga que volver a iniciar sesion.
 
-**Real-time Scenario:**
+Real-time Scenario:
 
 - el access token expira en 15 minutos
 - el refresh token dura 7 dias
@@ -127,15 +127,15 @@ Quien tenga el token puede usar el recurso, asi que debe protegerse bien.
 
 ## 38. API Rate Limiting
 
-**Definition:** Restringe cuantas requests puede hacer un cliente en una ventana de tiempo concreta.
+Restringe cuantas requests puede hacer un cliente en una ventana de tiempo concreta.
 
-**Real-time Example:**
+Real-time Example:
 
 ```text
 100 requests per minute per user
 ```
 
-**Why needed:**
+Why needed:
 
 - prevenir abuso
 - proteger recursos del servidor
@@ -143,13 +143,13 @@ Quien tenga el token puede usar el recurso, asi que debe protegerse bien.
 
 ## 39. Why Rate Limiting Matters
 
-**Real-time Problem:** Una API publica sin limites puede sufrir:
+Real-time Problem: Una API publica sin limites puede sufrir:
 
 - ataques de bots
 - intentos de DDoS
 - caidas del servidor
 
-**Common Solution:**
+Common Solution:
 
 ```http
 429 Too Many Requests
@@ -157,9 +157,9 @@ Quien tenga el token puede usar el recurso, asi que debe protegerse bien.
 
 ## 40. Idempotency
 
-**Definition:** Una operacion es idempotente si ejecutarla varias veces produce el mismo resultado final.
+Una operacion es idempotente si ejecutarla varias veces produce el mismo resultado final.
 
-**Real-time Example - Payments:**
+Real-time Example - Payments:
 
 ```http
 POST /payments
@@ -171,43 +171,43 @@ Si la request se reintenta por un fallo de red, el pago solo se procesa una vez.
 
 ## 41. Idempotent HTTP Methods
 
-**Idempotent Methods:**
+Idempotent Methods:
 
 - `GET`
 - `PUT`
 - `DELETE`
 
-**Not Idempotent:**
+Not Idempotent:
 
 - `POST`, porque puede crear recursos nuevos cada vez
 
 ## 42. Pagination
 
-**Definition:** La paginacion divide datasets grandes en partes pequenas para mejorar rendimiento.
+La paginacion divide datasets grandes en partes pequenas para mejorar rendimiento.
 
-**Real-time Scenario - Instagram Feed:**
+Real-time Scenario - Instagram Feed:
 
 - carga 10 posts al principio
 - al hacer scroll, carga la siguiente pagina
 
 ## 43. Pagination Examples
 
-**Example:**
+Example:
 
 ```http
 GET /api/posts?page=2&limit=20
 ```
 
-**Alternative Approaches:**
+Alternative Approaches:
 
 - paginacion por offset
 - paginacion por cursor, mejor para grandes volumenes
 
 ## 44. Filtering
 
-**Definition:** `Filtering` restringe las respuestas segun una condicion.
+`Filtering` restringe las respuestas segun una condicion.
 
-**Real-time Example:**
+Real-time Example:
 
 ```http
 GET /orders?status=delivered&payment=completed
@@ -215,9 +215,9 @@ GET /orders?status=delivered&payment=completed
 
 ## 45. Sorting
 
-**Definition:** `Sorting` organiza la respuesta en un orden especifico.
+`Sorting` organiza la respuesta en un orden especifico.
 
-**Real-time Example:**
+Real-time Example:
 
 ```http
 GET /products?sort=price&order=asc
@@ -239,3 +239,4 @@ GET /products?sort=price&order=asc
 ## Siguiente paso
 
 La segunda parte de `Intermediate` entra en arquitectura, estilos de API, mocking, contratos y latencia.
+

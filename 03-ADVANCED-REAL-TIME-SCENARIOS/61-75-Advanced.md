@@ -1,4 +1,4 @@
-# Advanced and Real-Time Scenarios - Q61 to Q75
+﻿# Advanced and Real-Time Scenarios - Q61 to Q75
 
 ## Indice de contenidos
 
@@ -25,9 +25,9 @@ Mantiene el estilo del PDF con definiciones, listas practicas y ejemplos reales.
 
 ## 61. Securing an API
 
-**Definition:** Asegurar una API significa permitir acceso solo a clientes validos y autorizados mientras proteges los datos frente a ataques.
+Asegurar una API significa permitir acceso solo a clientes validos y autorizados mientras proteges los datos frente a ataques.
 
-**Key Security Measures:**
+Key Security Measures:
 
 - HTTPS
 - authentication
@@ -36,7 +36,7 @@ Mantiene el estilo del PDF con definiciones, listas practicas y ejemplos reales.
 - rate limiting
 - firewall y WAF
 
-**Real-time Scenario - Banking App:**
+Real-time Scenario - Banking App:
 
 - HTTPS cifra transacciones
 - JWT valida usuarios
@@ -45,7 +45,7 @@ Mantiene el estilo del PDF con definiciones, listas practicas y ejemplos reales.
 
 ## 62. Real-Time Login API Flow
 
-**Step-by-step Flow:**
+Step-by-step Flow:
 
 1. el usuario escribe username y password
 2. el cliente envia `POST /login`
@@ -55,20 +55,20 @@ Mantiene el estilo del PDF con definiciones, listas practicas y ejemplos reales.
 6. el cliente lo manda en siguientes requests
 7. el servidor lo verifica
 
-**Real-time Examples:** Amazon, Netflix o Gmail siguen un flujo parecido.
+Real-time Examples: Amazon, Netflix o Gmail siguen un flujo parecido.
 
 ## 63. API Error Handling
 
-**Definition:** Consiste en devolver respuestas utiles y seguras cuando algo falla.
+Consiste en devolver respuestas utiles y seguras cuando algo falla.
 
-**Best Practices:**
+Best Practices:
 
 - status codes correctos
 - mensajes claros
 - logs de errores
 - no exponer stack traces internos
 
-**Example Response:**
+Example Response:
 
 ```json
 {
@@ -79,22 +79,22 @@ Mantiene el estilo del PDF con definiciones, listas practicas y ejemplos reales.
 
 ## 64. Centralized Error Handling
 
-**Definition:** Manejar todos los errores de la aplicacion desde un punto comun, como middleware o global handler.
+Manejar todos los errores de la aplicacion desde un punto comun, como middleware o global handler.
 
-**Benefits:**
+Benefits:
 
 - codigo mas limpio
 - respuestas consistentes
 - debugging mas facil
 
-**Real-time Use:**
+Real-time Use:
 
 - middleware de errores en Express.js
 - global exception handler en Spring Boot
 
 ## 65. Designing a REST API
 
-**Best Practices:**
+Best Practices:
 
 - usar sustantivos, no verbos
 - usar bien los metodos HTTP
@@ -104,7 +104,7 @@ Mantiene el estilo del PDF con definiciones, listas practicas y ejemplos reales.
 - paginacion y filtros
 - seguridad
 
-**Good Design:**
+Good Design:
 
 ```http
 GET /users
@@ -112,7 +112,7 @@ POST /users
 GET /users/{id}
 ```
 
-**Bad Design:**
+Bad Design:
 
 ```http
 /getUsers
@@ -121,15 +121,15 @@ GET /users/{id}
 
 ## 66. API Schema Validation
 
-**Definition:** Verifica que las requests entrantes cumplan la estructura esperada.
+Verifica que las requests entrantes cumplan la estructura esperada.
 
-**Why important:**
+Why important:
 
 - previene datos invalidos
 - mejora seguridad
 - evita crashes
 
-**Tools:**
+Tools:
 
 - Joi
 - Zod
@@ -138,21 +138,21 @@ GET /users/{id}
 
 ## 67. OpenAPI Specification
 
-**Definition:** Es un formato estandar para definir APIs REST.
+Es un formato estandar para definir APIs REST.
 
-**Uses:**
+Uses:
 
 - generar documentacion
 - generar SDKs
 - validar requests
 
-**Real-time Example:** Swagger UI en APIs como Stripe, GitHub o PayPal.
+Real-time Example: Swagger UI en APIs como Stripe, GitHub o PayPal.
 
 ## 68. Middleware
 
-**Definition:** Codigo que se ejecuta entre request y response.
+Codigo que se ejecuta entre request y response.
 
-**Real-time Uses:**
+Real-time Uses:
 
 - authentication
 - logging
@@ -160,7 +160,7 @@ GET /users/{id}
 - error handling
 - rate limiting
 
-**Flow:**
+Flow:
 
 ```text
 Request -> Middleware -> Controller -> Response
@@ -168,7 +168,7 @@ Request -> Middleware -> Controller -> Response
 
 ## 69. Middleware Real-Time Example
 
-**Scenario:** Para cada request a `/api/orders`:
+Scenario: Para cada request a `/api/orders`:
 
 1. verificar JWT
 2. registrar la request
@@ -177,11 +177,11 @@ Request -> Middleware -> Controller -> Response
 
 ## 70. File Upload via API
 
-**Definition:** La subida de archivos por API suele usar `multipart/form-data`.
+La subida de archivos por API suele usar `multipart/form-data`.
 
-**Real-time Example:** Subir foto de perfil en Facebook o Instagram.
+Real-time Example: Subir foto de perfil en Facebook o Instagram.
 
-**Header:**
+Header:
 
 ```http
 Content-Type: multipart/form-data
@@ -189,7 +189,7 @@ Content-Type: multipart/form-data
 
 ## 71. Handling Large API Responses
 
-**Techniques:**
+Techniques:
 
 - pagination
 - streaming
@@ -197,13 +197,13 @@ Content-Type: multipart/form-data
 - caching
 - lazy loading
 
-**Real-time Scenario:** Descargar el historial de transacciones de un banco.
+Real-time Scenario: Descargar el historial de transacciones de un banco.
 
 ## 72. API Monitoring
 
-**Definition:** Seguimiento del rendimiento, uptime y fallos de una API.
+Seguimiento del rendimiento, uptime y fallos de una API.
 
-**Metrics:**
+Metrics:
 
 - response time
 - error rate
@@ -212,7 +212,7 @@ Content-Type: multipart/form-data
 
 ## 73. API Monitoring Tools
 
-**Common Tools:**
+Common Tools:
 
 - New Relic
 - Datadog
@@ -222,16 +222,16 @@ Content-Type: multipart/form-data
 
 ## 74. Webhook
 
-**Definition:** Un webhook permite que un servidor envie datos en tiempo real a otro sistema automaticamente cuando ocurre un evento.
+Un webhook permite que un servidor envie datos en tiempo real a otro sistema automaticamente cuando ocurre un evento.
 
-**Difference from API:**
+Difference from API:
 
 - API = el cliente pide datos
 - Webhook = el servidor empuja datos
 
 ## 75. Webhook Real-Time Example
 
-**Payment Gateway Scenario:**
+Payment Gateway Scenario:
 
 - pago exitoso
 - pago fallido
@@ -254,3 +254,4 @@ Stripe envia un webhook y tu servidor actualiza el estado del pedido.
 ## Siguiente paso
 
 La siguiente parte entra en eventos, colas, asincronia, despliegues y control de concurrencia.
+

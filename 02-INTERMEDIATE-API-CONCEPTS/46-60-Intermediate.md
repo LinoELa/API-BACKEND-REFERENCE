@@ -1,4 +1,4 @@
-# Intermediate API Concepts - Q46 to Q60
+﻿# Intermediate API Concepts - Q46 to Q60
 
 ## Indice de contenidos
 
@@ -25,9 +25,9 @@ Son conceptos muy comunes cuando una API empieza a crecer de verdad.
 
 ## 46. HATEOAS
 
-**Definition:** `HATEOAS` (`Hypermedia As The Engine Of Application State`) significa que las respuestas de la API incluyen enlaces hacia acciones relacionadas.
+`HATEOAS` (`Hypermedia As The Engine Of Application State`) significa que las respuestas de la API incluyen enlaces hacia acciones relacionadas.
 
-**Real-time Example:**
+Real-time Example:
 
 ```json
 {
@@ -42,9 +42,9 @@ Son conceptos muy comunes cuando una API empieza a crecer de verdad.
 
 ## 47. API Gateway
 
-**Definition:** Un `API Gateway` es un punto de entrada unico que gestiona requests hacia varios servicios backend.
+Un `API Gateway` es un punto de entrada unico que gestiona requests hacia varios servicios backend.
 
-**Responsibilities:**
+Responsibilities:
 
 - authentication
 - rate limiting
@@ -53,9 +53,9 @@ Son conceptos muy comunes cuando una API empieza a crecer de verdad.
 
 ## 48. Microservices Architecture
 
-**Definition:** Es una arquitectura donde una aplicacion se divide en servicios pequenos e independientes.
+Es una arquitectura donde una aplicacion se divide en servicios pequenos e independientes.
 
-**Real-time Example - E-commerce:**
+Real-time Example - E-commerce:
 
 - User Service
 - Order Service
@@ -66,13 +66,13 @@ Cada uno tiene su propia API.
 
 ## 49. API Gateway Real-Time Use Case
 
-**Flow:**
+Flow:
 
 ```text
 Client -> API Gateway -> Appropriate Microservice
 ```
 
-**Benefits:**
+Benefits:
 
 - simplifica la logica del frontend
 - centraliza seguridad
@@ -90,27 +90,27 @@ Client -> API Gateway -> Appropriate Microservice
 
 ## 51. SOAP
 
-**Definition:** `SOAP` (`Simple Object Access Protocol`) es un protocolo de mensajeria basado en XML.
+`SOAP` (`Simple Object Access Protocol`) es un protocolo de mensajeria basado en XML.
 
-**Real-time Use:**
+Real-time Use:
 
 - sistemas bancarios
 - sistemas empresariales legacy
 
 ## 52. WSDL
 
-**Definition:** `WSDL` describe la estructura, operaciones y endpoints de un servicio SOAP.
+`WSDL` describe la estructura, operaciones y endpoints de un servicio SOAP.
 
-**Analogy:**
+Analogy:
 
 - `WSDL` = contrato
 - `API` = implementacion
 
 ## 53. GraphQL
 
-**Definition:** `GraphQL` es un lenguaje de consulta que permite al cliente pedir exactamente los datos que necesita.
+`GraphQL` es un lenguaje de consulta que permite al cliente pedir exactamente los datos que necesita.
 
-**Real-time Example:**
+Real-time Example:
 
 ```graphql
 {
@@ -123,9 +123,9 @@ Client -> API Gateway -> Appropriate Microservice
 
 ## 54. REST vs GraphQL
 
-**REST Issue:** over-fetching o under-fetching
+REST Issue: over-fetching o under-fetching
 
-**GraphQL Solution:** peticiones mas precisas
+GraphQL Solution: peticiones mas precisas
 
 Lectura rapida:
 
@@ -134,37 +134,37 @@ Lectura rapida:
 
 ## 55. API Throttling
 
-**Definition:** `API Throttling` es el control temporal de la velocidad de requests cuando la carga del servidor es alta.
+`API Throttling` es el control temporal de la velocidad de requests cuando la carga del servidor es alta.
 
-**Real-time Example:** Durante un pico de ventas tipo Amazon, se limita trafico para evitar caidas.
+Real-time Example: Durante un pico de ventas tipo Amazon, se limita trafico para evitar caidas.
 
 ## 56. Load Balancing
 
-**Definition:** Reparte requests entrantes entre varios servidores.
+Reparte requests entrantes entre varios servidores.
 
-**Real-time Scenario:** Trafico tipo Netflix distribuido entre muchos servidores alrededor del mundo.
+Real-time Scenario: Trafico tipo Netflix distribuido entre muchos servidores alrededor del mundo.
 
 ## 57. API Mocking
 
-**Definition:** `API Mocking` significa simular respuestas de una API sin backend real.
+`API Mocking` significa simular respuestas de una API sin backend real.
 
-**Real-time Usage:** El equipo frontend puede avanzar antes de que el backend este terminado.
+Real-time Usage: El equipo frontend puede avanzar antes de que el backend este terminado.
 
 ## 58. Contract Testing
 
-**Definition:** Comprueba que proveedor y consumidor respetan el mismo contrato de API.
+Comprueba que proveedor y consumidor respetan el mismo contrato de API.
 
-**Real-time Example:** Si frontend espera un campo `email`, backend no deberia eliminarlo sin coordinarlo.
+Real-time Example: Si frontend espera un campo `email`, backend no deberia eliminarlo sin coordinarlo.
 
 ## 59. API Latency
 
-**Definition:** Es el tiempo desde que se envia una request hasta que se recibe la response.
+Es el tiempo desde que se envia una request hasta que se recibe la response.
 
-**Impact:** Alta latencia significa mala experiencia de usuario.
+Impact: Alta latencia significa mala experiencia de usuario.
 
 ## 60. Reducing API Latency
 
-**Techniques:**
+Techniques:
 
 - caching
 - database indexing
@@ -188,3 +188,4 @@ Lectura rapida:
 ## Cierre de seccion
 
 Con `Q31-Q60` queda la parte intermedia mucho mas alineada con el PDF, incluyendo ejemplos y escenarios de uso reales.
+

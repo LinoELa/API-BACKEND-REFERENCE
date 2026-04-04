@@ -1,4 +1,4 @@
-# API Basics - Q16 to Q30
+﻿# API Basics - Q16 to Q30
 
 ## Indice de contenidos
 
@@ -25,11 +25,11 @@ Aqui ya aparecen temas muy comunes en proyectos reales y entrevistas.
 
 ## 16. Headers
 
-**Definition:** Los `headers` son pares `key-value` que viajan en una request o response HTTP y contienen metadatos sobre esa comunicacion.
+Los `headers` son pares `key-value` que viajan en una request o response HTTP y contienen metadatos sobre esa comunicacion.
 
 No suelen ser el dato principal, pero le dicen al servidor o al cliente como tratar la informacion.
 
-**Real-time Example:** Despues de hacer login, una app puede pedir el perfil asi:
+Real-time Example: Despues de hacer login, una app puede pedir el perfil asi:
 
 ```http
 GET /api/user/profile
@@ -44,13 +44,13 @@ Lectura rapida:
 - `Content-Type` = formato de los datos enviados
 - `Accept` = formato esperado de la respuesta
 
-**Interview Tip:** Los headers se usan mucho para autenticacion, tipo de contenido, cache y datos del cliente.
+Interview Tip: Los headers se usan mucho para autenticacion, tipo de contenido, cache y datos del cliente.
 
 ## 17. Content-Type
 
-**Definition:** `Content-Type` indica el formato del body que se esta enviando o devolviendo.
+`Content-Type` indica el formato del body que se esta enviando o devolviendo.
 
-**Real-time Examples:**
+Real-time Examples:
 
 1. Envio de JSON
 
@@ -71,15 +71,15 @@ Content-Type: application/json
 Content-Type: multipart/form-data
 ```
 
-**Why it matters:** Si mandas JSON y el `Content-Type` falta o es incorrecto, la request puede fallar.
+Why it matters: Si mandas JSON y el `Content-Type` falta o es incorrecto, la request puede fallar.
 
-**Interview Tip:** Ajustalo bien en `POST`, `PUT` y `PATCH`.
+Interview Tip: Ajustalo bien en `POST`, `PUT` y `PATCH`.
 
 ## 18. Accept Header
 
-**Definition:** `Accept` indica al servidor que formato de respuesta espera el cliente.
+`Accept` indica al servidor que formato de respuesta espera el cliente.
 
-**Real-time Example - Mobile App:**
+Real-time Example - Mobile App:
 
 ```http
 GET /api/products
@@ -96,7 +96,7 @@ Respuesta:
 }
 ```
 
-**Real-time Example - Browser:**
+Real-time Example - Browser:
 
 ```http
 Accept: text/html
@@ -104,16 +104,16 @@ Accept: text/html
 
 En ese caso, el servidor podria responder con HTML.
 
-**Interview Tip:**
+Interview Tip:
 
 - `Accept` = formato esperado de respuesta
 - `Content-Type` = formato de datos enviados
 
 ## 19. Query Parameter
 
-**Definition:** Los `query parameters` son pares `key-value` que se agregan a la URL despues de `?` y se usan para filtrar, ordenar, buscar o paginar.
+Los `query parameters` son pares `key-value` que se agregan a la URL despues de `?` y se usan para filtrar, ordenar, buscar o paginar.
 
-**Real-time Example - E-commerce Website:**
+Real-time Example - E-commerce Website:
 
 ```http
 GET /api/products?category=mobile&price=low&page=2
@@ -125,13 +125,13 @@ Lectura rapida:
 - `price=low` = criterio de orden o seleccion
 - `page=2` = paginacion
 
-**Interview Tip:** Normalmente son opcionales y sirven para modificar la consulta.
+Interview Tip: Normalmente son opcionales y sirven para modificar la consulta.
 
 ## 20. Path Parameter
 
-**Definition:** Los `path parameters` son variables dentro de la propia ruta y suelen identificar un recurso concreto.
+Los `path parameters` son variables dentro de la propia ruta y suelen identificar un recurso concreto.
 
-**Real-time Examples:**
+Real-time Examples:
 
 ```http
 GET /api/users/25
@@ -143,7 +143,7 @@ Lectura rapida:
 - obtener el usuario `25`
 - borrar el pedido `789`
 
-**Interview Tip:** Normalmente son obligatorios y representan identificadores unicos.
+Interview Tip: Normalmente son obligatorios y representan identificadores unicos.
 
 ## 21. Difference between Query and Path Parameters
 
@@ -154,7 +154,7 @@ Lectura rapida:
 | Position | Dentro de la ruta | Despues de `?` |
 | Example | `/users/10` | `/users?role=admin` |
 
-**Real-time Example:**
+Real-time Example:
 
 ```http
 GET /api/users/10?active=true
@@ -167,27 +167,27 @@ Lectura rapida:
 
 ## 22. API Documentation
 
-**Definition:** La documentacion de API explica como usar una API: endpoints, formatos de request, formatos de response y errores.
+La documentacion de API explica como usar una API: endpoints, formatos de request, formatos de response y errores.
 
-**Real-time Examples:**
+Real-time Examples:
 
 - `Stripe API docs` = pagos
 - `Google Maps API docs` = ubicacion y mapas
 - `Twitter API docs` = tweets y timelines
 
-**Interview Tip:** Una buena documentacion reduce confusion y acelera integraciones.
+Interview Tip: Una buena documentacion reduce confusion y acelera integraciones.
 
 ## 23. Swagger / OpenAPI
 
-**Definition:** `Swagger` u `OpenAPI` es una especificacion estandar para documentar APIs REST de forma clara e interactiva.
+`Swagger` u `OpenAPI` es una especificacion estandar para documentar APIs REST de forma clara e interactiva.
 
-**Real-time Scenario:** Un desarrollador frontend abre Swagger UI y:
+Real-time Scenario: Un desarrollador frontend abre Swagger UI y:
 
 - ve todos los endpoints
 - prueba APIs sin Postman
 - entiende formatos de request y response
 
-**Benefits:**
+Benefits:
 
 - testing interactivo
 - documentacion generada automaticamente
@@ -195,9 +195,9 @@ Lectura rapida:
 
 ## 24. API Versioning
 
-**Definition:** El versionado de API consiste en mantener varias versiones para introducir cambios sin romper a los clientes existentes.
+El versionado de API consiste en mantener varias versiones para introducir cambios sin romper a los clientes existentes.
 
-**Real-time Example:**
+Real-time Example:
 
 ```http
 /api/v1/users
@@ -209,13 +209,13 @@ Lectura rapida:
 - `v1` = apps antiguas
 - `v2` = apps nuevas
 
-**Interview Tip:** El versionado facilita cambios graduales y compatibilidad hacia atras.
+Interview Tip: El versionado facilita cambios graduales y compatibilidad hacia atras.
 
 ## 25. Why Versioning Matters
 
-**Definition:** El versionado permite que aplicaciones existentes sigan funcionando aunque la API cambie.
+El versionado permite que aplicaciones existentes sigan funcionando aunque la API cambie.
 
-**Real-time Problem:**
+Real-time Problem:
 
 Version antigua:
 
@@ -234,9 +234,9 @@ Con versionado, la migracion es segura.
 
 ## 26. REST Constraint
 
-**Definition:** Las `REST constraints` son reglas que definen como debe comportarse una API REST.
+Las `REST constraints` son reglas que definen como debe comportarse una API REST.
 
-**Key Constraints:**
+Key Constraints:
 
 1. `Client-Server`
 2. `Stateless`
@@ -244,7 +244,7 @@ Con versionado, la migracion es segura.
 4. `Uniform Interface`
 5. `Layered System`
 
-**Real-time Example:**
+Real-time Example:
 
 ```text
 Frontend React app -> Backend Node API -> Database
@@ -254,20 +254,20 @@ Cada capa cumple una funcion y puede evolucionar de forma mas independiente.
 
 ## 27. Cache
 
-**Definition:** La `cache` es almacenamiento temporal de datos usados con frecuencia para mejorar el rendimiento y reducir carga del servidor.
+La `cache` es almacenamiento temporal de datos usados con frecuencia para mejorar el rendimiento y reducir carga del servidor.
 
-**Real-time Example - Weather App:**
+Real-time Example - Weather App:
 
 - primera request = llamada real a la API, mas lenta
 - siguientes requests = datos cacheados, mas rapidos
 
-**Interview Tip:** Cache mejora velocidad, escalabilidad y experiencia de usuario.
+Interview Tip: Cache mejora velocidad, escalabilidad y experiencia de usuario.
 
 ## 28. CORS
 
-**Definition:** `CORS` (`Cross-Origin Resource Sharing`) permite que un servidor indique que dominios pueden acceder a sus recursos.
+`CORS` (`Cross-Origin Resource Sharing`) permite que un servidor indique que dominios pueden acceder a sus recursos.
 
-**Real-time Scenario:**
+Real-time Scenario:
 
 Frontend:
 
@@ -287,19 +287,19 @@ Header enviado por el servidor:
 Access-Control-Allow-Origin: https://myapp.com
 ```
 
-**Interview Tip:** CORS es una restriccion del navegador, no una regla de negocio del backend.
+Interview Tip: CORS es una restriccion del navegador, no una regla de negocio del backend.
 
 ## 29. Same-Origin Policy
 
-**Definition:** Es una regla de seguridad del navegador que impide que una pagina acceda libremente a datos de otro origen.
+Es una regla de seguridad del navegador que impide que una pagina acceda libremente a datos de otro origen.
 
-**Origin =**
+Origin =
 
 - protocolo
 - dominio
 - puerto
 
-**Real-time Example:**
+Real-time Example:
 
 Bloqueado:
 
@@ -315,10 +315,9 @@ https://siteA.com -> https://siteA.com/api
 
 ## 30. API Authentication
 
-**Definition:** La autenticacion de API verifica quien esta haciendo la request antes de permitir acceso.
+La autenticacion de API verifica quien esta haciendo la request antes de permitir acceso.
 
-**Common Methods and Real-time Examples**
-
+Common Methods and Real-time Examples:`r`n
 1. API Keys
 
 ```http
@@ -347,7 +346,7 @@ Authorization: Basic base64(username:password)
 
 Uso comun: sistemas internos o legacy.
 
-**Interview Tip:**
+Interview Tip:
 
 - authentication = identidad
 - authorization = permisos
@@ -370,3 +369,4 @@ Uso comun: sistemas internos o legacy.
 ## Cierre de seccion
 
 Con `Q1-Q30` queda una version de `Basic` mucho mas alineada con el PDF, incluyendo ejemplos y escenarios de uso reales.
+

@@ -20,22 +20,33 @@
 
 ## Como leer esta guia
 
-Esta version de `Basic` esta mas alineada con el PDF original.
-Ahora cada punto incluye definicion, ejemplo real y, cuando aplica, una pista util para entrevistas.
+Esta primera parte esta pensada para entender los conceptos basicos de APIs con palabras simples.
+Los titulos se mantienen en ingles porque asi suelen aparecer en entrevistas, cursos y documentacion.
 
 ## 1. API
 
-**Definition:** Una API (`Application Programming Interface`) es un conjunto de reglas y protocolos que permite que distintas aplicaciones se comuniquen entre si.
+API significa `Application Programming Interface`.
+Una API es un conjunto de reglas que permite que dos sistemas se comuniquen entre si.
 
-**Real-time Scenario:** Cuando usas una app del tiempo en el movil, la app no guarda el clima dentro de ella. Llama a una API del clima, envia tu ubicacion y recibe los datos actuales para mostrarlos.
+En simple: una aplicacion pide algo y otra aplicacion responde.
 
-**Interview Tip:** Una API se puede explicar como un puente o mensajero entre sistemas.
+Real-time Scenario: Cuando usas una app del clima en el movil, la app no tiene el clima guardado dentro. Llama a una API del tiempo, envia tu ubicacion y recibe la informacion actual para mostrarla.
+
+Idea clave: una API es el puente entre dos partes de software.
 
 ## 2. REST API
 
-**Definition:** `REST` (`Representational State Transfer`) es un estilo arquitectonico para disenar aplicaciones en red usando metodos HTTP para operar sobre recursos.
+Una `REST API` es una API que sigue el estilo REST para trabajar con recursos por medio de HTTP.
 
-**Real-time Scenario:** Una app de reparto de comida puede usar una REST API asi:
+En una REST API, los datos suelen representarse como recursos:
+
+- `/users`
+- `/products`
+- `/orders`
+
+Cada recurso se consulta o modifica usando metodos HTTP como `GET`, `POST`, `PUT`, `PATCH` y `DELETE`.
+
+Real-time Scenario: Una app de reparto de comida puede usar una REST API asi:
 
 ```http
 GET /restaurants
@@ -44,18 +55,26 @@ GET /orders/{id}
 DELETE /orders/{id}
 ```
 
-Lectura rapida:
+En ese escenario, las operaciones habituales son:
 
-- `GET /restaurants` = ver restaurantes disponibles
-- `POST /orders` = crear un pedido nuevo
-- `GET /orders/{id}` = revisar el estado del pedido
-- `DELETE /orders/{id}` = cancelar un pedido
+- `GET /restaurants`: ver restaurantes disponibles
+- `POST /orders`: crear un pedido nuevo
+- `GET /orders/{id}`: revisar el estado del pedido
+- `DELETE /orders/{id}`: cancelar un pedido
 
 ## 3. HTTP Methods
 
-**Definition:** Son operaciones estandar del protocolo HTTP para la comunicacion web.
+Los `HTTP methods` indican la accion que queremos hacer sobre un recurso.
 
-**Real-time Usage:** En un e-commerce:
+Los mas comunes son:
+
+- `GET`: obtener datos
+- `POST`: crear datos
+- `PUT`: reemplazar datos
+- `PATCH`: actualizar parte de un dato
+- `DELETE`: eliminar datos
+
+Real-time Usage: En un e-commerce:
 
 ```http
 GET /api/products
@@ -65,40 +84,51 @@ DELETE /api/comments/5
 PATCH /api/orders/10
 ```
 
-Lectura rapida:
+Ejemplo:
 
-- `GET` = obtener datos
-- `POST` = crear o enviar datos
-- `PUT` = reemplazar datos
-- `PATCH` = actualizar una parte
-- `DELETE` = eliminar
+```http
+GET /users
+POST /users
+DELETE /users/10
+```
 
 ## 4. Difference between GET and POST
 
-**GET**
+`GET` y `POST` son dos metodos HTTP muy usados, pero no sirven para lo mismo.
+`GET` se usa para pedir informacion y `POST` se usa para enviar informacion, normalmente para crear un recurso nuevo.
 
-- se usa para recuperar datos
-- los parametros suelen ir en la URL
-- se puede guardar en marcadores
-- tiene menos capacidad para enviar datos
+Diferencias importantes:
 
-**POST**
+- `GET` suele enviar datos en la URL
+- `POST` suele enviar datos en el body de la peticion
+- `GET` se usa para lectura
+- `POST` se usa para creacion o envio de datos
 
-- se usa para enviar datos
-- los datos van en el body
-- no esta pensado para guardar en marcadores
-- soporta mas informacion
-
-**Real-time Examples:**
+Real-time Examples:
 
 - `GET`: buscar productos en Amazon, por ejemplo `amazon.com/search?q=laptop`
 - `POST`: enviar un formulario de login con usuario y password
 
+Ejemplo:
+
+```http
+GET /products
+POST /products
+```
+
 ## 5. Endpoint
 
-**Definition:** Es una URL especifica donde una API expone una operacion.
+Un `endpoint` es una direccion especifica de una API a la que hacemos una solicitud.
 
-**Real-time Example:** En una app bancaria:
+Ejemplo simple:
+
+```http
+GET /users/5
+```
+
+Aqui, `/users/5` es el endpoint.
+
+Real-time Example: En una aplicacion bancaria, algunos endpoints comunes pueden ser:
 
 ```http
 GET /api/accounts
@@ -107,16 +137,16 @@ POST /api/transfers
 GET /api/transactions
 ```
 
-Lectura rapida:
-
-- listar cuentas
-- ver una cuenta concreta
-- iniciar una transferencia
-- consultar movimientos
+Idea simple: si la API fuera una casa, cada endpoint seria una puerta distinta para una accion distinta.
 
 ## 6. Request and Response
 
-**Request:** Es lo que el cliente envia al servidor.
+Una `request` es la peticion que el cliente envia a la API.
+Una `response` es la respuesta que la API devuelve al cliente.
+
+Ejemplo real de login:
+
+Request:
 
 ```http
 POST /api/login HTTP/1.1
@@ -125,7 +155,7 @@ Content-Type: application/json
 {"username": "john", "password": "pass123"}
 ```
 
-**Response:** Es lo que el servidor devuelve al cliente.
+Response:
 
 ```http
 HTTP/1.1 200 OK
@@ -134,16 +164,17 @@ Content-Type: application/json
 {"token": "abc123", "user": {"id": 1, "name": "John"}}
 ```
 
-**Idea clave:**
+Idea clave:
 
-- request = lo que pides o envias
-- response = lo que recibes
+- `request` = lo que pedimos o enviamos
+- `response` = lo que recibimos
 
 ## 7. JSON
 
-**Definition:** `JSON` (`JavaScript Object Notation`) es un formato ligero para intercambiar datos entre sistemas.
+`JSON` significa `JavaScript Object Notation`.
+Es un formato de texto muy usado para intercambiar datos entre cliente y servidor.
 
-**Real-time Scenario:** Cuando rellenas un formulario de registro, los datos pueden viajar como JSON:
+Real-time Scenario: Cuando rellenas un formulario de registro, los datos pueden convertirse a JSON asi:
 
 ```json
 {
@@ -159,46 +190,59 @@ Content-Type: application/json
 }
 ```
 
-**Interview Tip:** JSON es popular porque es facil de leer para humanos y de procesar para programas.
+JSON es popular porque es facil de leer para personas y facil de procesar para programas.
 
 ## 8. HTTP Status Code
 
-**Definition:** Es un codigo de 3 digitos que indica el resultado de una request HTTP.
+Un `HTTP status code` es un numero que indica el resultado de una solicitud HTTP.
 
-**Real-time Examples:**
+Le dice al cliente si todo salio bien, si hubo un error o si hace falta algo mas.
 
-- `200 OK` = la solicitud salio bien
-- `404 Not Found` = la pagina o recurso no existe
-- `500 Internal Server Error` = el servidor tiene un fallo
-- `403 Forbidden` = no tienes permiso para acceder
+Real-time Examples:
+
+- `200 OK`: la solicitud salio bien
+- `404 Not Found`: el recurso no fue encontrado
+- `500 Internal Server Error`: error interno del servidor
+- `403 Forbidden`: no tienes permiso para acceder
 
 ## 9. Common HTTP Status Codes
 
-**Success**
+Los `HTTP status codes` mas comunes aparecen una y otra vez en APIs reales y conviene reconocerlos rapido.
 
-- `200 OK` = request correcta
-- `201 Created` = recurso creado correctamente
-- `204 No Content` = exito sin contenido de respuesta
+Success:
 
-**Client Errors**
+- `200 OK`: la solicitud salio bien
+- `201 Created`: el recurso fue creado correctamente
+- `204 No Content`: exito, pero sin contenido de respuesta
 
-- `400 Bad Request` = datos invalidos
-- `401 Unauthorized` = falta autenticacion
-- `403 Forbidden` = autenticado, pero sin permiso
-- `404 Not Found` = recurso inexistente
-- `429 Too Many Requests` = se supero el limite de peticiones
+Client Errors:
 
-**Server Errors**
+- `400 Bad Request`: la peticion es invalida
+- `401 Unauthorized`: falta autenticacion
+- `403 Forbidden`: autenticado, pero sin permiso
+- `404 Not Found`: el recurso no existe
+- `429 Too Many Requests`: se supero el limite de peticiones
 
-- `500 Internal Server Error` = problema interno
-- `502 Bad Gateway` = fallo de un servicio aguas arriba
-- `503 Service Unavailable` = servicio caido o en mantenimiento
+Server Errors:
+
+- `500 Internal Server Error`: error del servidor
+- `502 Bad Gateway`: fallo de un servicio aguas arriba
+- `503 Service Unavailable`: servicio caido o en mantenimiento
+
+Buena practica: entender estos codigos ayuda a depurar mas rapido.
 
 ## 10. RESTful API
 
-**Definition:** Es una API que sigue los principios de REST, como `statelessness`, `cacheability` y el uso correcto de metodos HTTP.
+Una `RESTful API` es una API que aplica correctamente los principios de REST.
 
-**Real-time Scenario - E-commerce API:**
+Normalmente significa:
+
+- usa recursos con URLs claras
+- usa metodos HTTP de forma correcta
+- trabaja sin estado entre peticiones
+- devuelve respuestas consistentes
+
+Real-time Scenario - E-commerce API:
 
 ```http
 GET /products
@@ -209,32 +253,49 @@ PATCH /products/{id}
 DELETE /products/{id}
 ```
 
-Lectura rapida:
+Ejemplo mas RESTful:
 
-- listar productos
-- crear producto
-- ver detalle
-- actualizar completo
-- actualizar parcial
-- eliminar
+```http
+GET /users
+GET /users/7
+POST /users
+PATCH /users/7
+DELETE /users/7
+```
 
 ## 11. Statelessness
 
-**Definition:** Cada request debe incluir toda la informacion necesaria para que el servidor la entienda y procese. El servidor no debe depender del contexto guardado de requests anteriores.
+`Statelessness` significa que cada peticion debe contener toda la informacion necesaria para ser entendida.
 
-**Real-time Example:** En una tienda como Amazon:
+El servidor no deberia depender de recordar peticiones anteriores para procesar la actual.
+
+Real-time Example: Cuando navegas productos en Amazon:
 
 - Request 1: `GET /products`
 - Request 2: `GET /cart` con token
 - Request 3: `GET /products/123`
 
-Cada request debe poder entenderse por si sola.
+Idea clave: cada request se entiende por si sola.
 
 ## 12. CRUD
 
-**Definition:** `CRUD` significa `Create`, `Read`, `Update`, `Delete`.
+`CRUD` representa las cuatro operaciones basicas sobre datos:
 
-**Real-time Blog System:**
+- `Create`: crear
+- `Read`: leer
+- `Update`: actualizar
+- `Delete`: eliminar
+
+Relacion comun con HTTP:
+
+| CRUD   | HTTP Method |
+| ------ | ----------- |
+| Create | POST        |
+| Read   | GET         |
+| Update | PUT/PATCH   |
+| Delete | DELETE      |
+
+Real-time Blog System:
 
 ```http
 POST /articles
@@ -243,45 +304,45 @@ PUT /articles/{id}
 DELETE /articles/{id}
 ```
 
-Relacion rapida:
-
-- Create = crear
-- Read = leer
-- Update = actualizar
-- Delete = eliminar
-
 ## 13. API Testing
 
-**Definition:** Probar una API significa verificar su funcionalidad, rendimiento, seguridad y fiabilidad.
+`API testing` es el proceso de comprobar que una API funciona correctamente.
 
-**Real-time Scenario:** En una API de pagos conviene probar:
+Se prueba, por ejemplo:
 
-- respuesta correcta cuando el pago sale bien
-- respuesta de error cuando falla
-- comportamiento bajo carga
-- edge cases
+- si devuelve la informacion esperada
+- si responde con el status correcto
+- si maneja bien errores
+- si valida datos de entrada
+- si cumple con seguridad y rendimiento
 
-**Interview Tip:** API testing no prueba la UI; prueba el comportamiento de la API.
+Real-time Scenario: En una API de pagos conviene probar casos de exito, fallo, carga y edge cases.
+
+No se prueba la interfaz visual, se prueba el comportamiento de la API.
 
 ## 14. Tools for API Testing
 
-Herramientas muy comunes en el PDF:
+Las herramientas de API testing ayudan a probar APIs de forma manual o automatizada.
+
+Algunas herramientas comunes para probar APIs son:
 
 - `Postman`
 - `Swagger / OpenAPI`
 - `SoapUI`
 
-Uso rapido:
+Otras herramientas utiles en proyectos modernos son:
 
-- `Postman` para lanzar requests manuales
-- `Swagger UI` para probar endpoints desde la documentacion
-- `SoapUI` muy usado en integraciones y servicios mas formales
+- `Insomnia`
+- `curl`
+- `Thunder Client`
 
 ## 15. Payload
 
-**Definition:** El `payload` es la informacion que se envia en el body de una request o una response.
+El `payload` es la informacion principal que se envia en una peticion o en una respuesta.
 
-**Example:**
+Muchas veces, cuando hablamos de payload, nos referimos al `body`.
+
+Real-time Example: En una red social o app de contenido, un payload podria verse asi:
 
 ```json
 {
@@ -290,20 +351,20 @@ Uso rapido:
 }
 ```
 
-En este caso, ese bloque JSON es el contenido principal que viaja dentro del mensaje.
+Ese bloque JSON es el contenido util que viaja dentro del mensaje.
 
 ## Resumen rapido
 
-- API = puente entre aplicaciones
-- REST API = estilo para trabajar con recursos usando HTTP
-- HTTP methods = acciones sobre recursos
-- endpoint = URL especifica de una operacion
-- request/response = entrada y salida de la comunicacion
-- JSON = formato de intercambio de datos
-- status code = resultado de la request
+- API = puente entre sistemas
+- REST = estilo para organizar APIs con recursos
+- HTTP methods = acciones
+- endpoint = ruta especifica
+- request/response = peticion y respuesta
+- JSON = formato de datos
+- status code = resultado de la solicitud
 - CRUD = operaciones basicas sobre datos
-- payload = datos principales del body
+- payload = informacion que se envia o recibe
 
 ## Siguiente paso
 
-La segunda parte de `Basic` completa `Q16-Q30` con headers, parametros, documentacion, versionado, CORS y autenticacion.
+La siguiente parte natural de esta seccion es `Q16-Q30`, donde entran headers, parametros, documentacion, versionado, CORS y autenticacion.

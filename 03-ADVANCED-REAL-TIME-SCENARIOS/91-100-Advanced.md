@@ -1,4 +1,4 @@
-# Advanced and Real-Time Scenarios - Q91 to Q100
+﻿# Advanced and Real-Time Scenarios - Q91 to Q100
 
 ## Indice de contenidos
 
@@ -20,7 +20,7 @@ Es el cierre natural del recorrido del PDF.
 
 ## 91. Automated API Testing
 
-**Tools:**
+Tools:
 
 - Postman automation
 - Jest
@@ -28,7 +28,7 @@ Es el cierre natural del recorrido del PDF.
 - Newman
 - RestAssured
 
-**Types:**
+Types:
 
 - unit tests
 - integration tests
@@ -36,9 +36,9 @@ Es el cierre natural del recorrido del PDF.
 
 ## 92. Schema Registry
 
-**Definition:** Un `schema registry` es un repositorio central para esquemas de API o eventos.
+Un `schema registry` es un repositorio central para esquemas de API o eventos.
 
-**Used in:**
+Used in:
 
 - microservices
 - sistemas event-driven
@@ -47,7 +47,7 @@ Sirve para mantener estructuras consistentes.
 
 ## 93. Documenting APIs for Frontend Teams
 
-**Best Practices:**
+Best Practices:
 
 - Swagger / OpenAPI
 - examples
@@ -57,7 +57,7 @@ Sirve para mantener estructuras consistentes.
 
 ## 94. Backward Compatibility
 
-**Strategies:**
+Strategies:
 
 - no eliminar campos existentes
 - agregar campos opcionales
@@ -66,18 +66,18 @@ Sirve para mantener estructuras consistentes.
 
 ## 95. API Sandbox
 
-**Definition:** Un entorno de pruebas donde los desarrolladores pueden experimentar sin riesgo.
+Un entorno de pruebas donde los desarrolladores pueden experimentar sin riesgo.
 
-**Real-time Example:**
+Real-time Example:
 
 - PayPal Sandbox
 - Stripe Test Mode
 
 ## 96. Rate Limit Exceeded Error
 
-**Definition:** Ocurre cuando el usuario supera el limite permitido de requests.
+Ocurre cuando el usuario supera el limite permitido de requests.
 
-**HTTP Code:**
+HTTP Code:
 
 ```http
 429 Too Many Requests
@@ -85,7 +85,7 @@ Sirve para mantener estructuras consistentes.
 
 ## 97. Debugging Production API Issues
 
-**Techniques:**
+Techniques:
 
 - logs
 - monitoring
@@ -95,9 +95,9 @@ Sirve para mantener estructuras consistentes.
 
 ## 98. Distributed Tracing
 
-**Definition:** Seguimiento de una request a traves de varios servicios.
+Seguimiento de una request a traves de varios servicios.
 
-**Real-time Example:**
+Real-time Example:
 
 ```text
 Client -> API Gateway -> Auth Service -> Order Service -> Payment Service
@@ -107,9 +107,9 @@ Se usa mucho para debugging en microservicios.
 
 ## 99. API-First Approach
 
-**Definition:** Disenar la API antes de construir frontend y backend.
+Disenar la API antes de construir frontend y backend.
 
-**Benefits:**
+Benefits:
 
 - mejor colaboracion
 - contratos claros
@@ -118,7 +118,7 @@ Se usa mucho para debugging en microservicios.
 
 ## 100. Designing a Login API
 
-**Interview Task Steps:**
+Interview Task Steps:
 
 1. definir endpoint `POST /login`
 2. validar input
@@ -130,7 +130,7 @@ Se usa mucho para debugging en microservicios.
 8. logging
 9. rate limiting
 
-**Sample Response:**
+Sample Response:
 
 ```json
 {
@@ -156,3 +156,4 @@ Se usa mucho para debugging en microservicios.
 ## Cierre de seccion
 
 Con `Q61-Q100` la parte avanzada queda tambien mucho mas alineada con el PDF, incluyendo ejemplos y escenarios reales.
+

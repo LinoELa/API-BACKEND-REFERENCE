@@ -1,4 +1,4 @@
-# Advanced and Real-Time Scenarios - Q76 to Q90
+﻿# Advanced and Real-Time Scenarios - Q76 to Q90
 
 ## Indice de contenidos
 
@@ -25,9 +25,9 @@ Son temas muy de produccion y muy utiles en entrevistas de backend.
 
 ## 76. Event-Driven API
 
-**Definition:** Una `Event-Driven API` se activa por eventos en lugar de depender solo de requests directas.
+Una `Event-Driven API` se activa por eventos en lugar de depender solo de requests directas.
 
-**Examples:**
+Examples:
 
 - pedido creado
 - usuario registrado
@@ -37,9 +37,9 @@ Se usa mucho en microservicios.
 
 ## 77. Message Queue
 
-**Definition:** Una `message queue` es una cola que guarda mensajes para procesarlos de forma asincrona.
+Una `message queue` es una cola que guarda mensajes para procesarlos de forma asincrona.
 
-**Why used:**
+Why used:
 
 - mejora escalabilidad
 - evita bloquear procesos
@@ -52,7 +52,7 @@ Se usa mucho en microservicios.
 - AWS SQS
 - Redis Queue
 
-**Real-time Example:** Procesamiento de pedidos en Amazon.
+Real-time Example: Procesamiento de pedidos en Amazon.
 
 ## 79. Sync vs Async APIs
 
@@ -62,38 +62,38 @@ Se usa mucho en microservicios.
 | blocking | non-blocking |
 | peor para tareas pesadas | mejor para escalar |
 
-**Examples:**
+Examples:
 
 - `Sync` = obtener perfil de usuario
 - `Async` = enviar email o generar un reporte
 
 ## 80. Retry Mechanism
 
-**Definition:** Consiste en reintentar automaticamente requests fallidas.
+Consiste en reintentar automaticamente requests fallidas.
 
-**Real-time Scenario:** Si falla la red al crear un pedido, el sistema puede reintentar de forma segura.
+Real-time Scenario: Si falla la red al crear un pedido, el sistema puede reintentar de forma segura.
 
 ## 81. Circuit Breaker Pattern
 
-**Definition:** El `circuit breaker` detiene llamadas a un servicio que esta fallando para evitar que todo el sistema colapse.
+El `circuit breaker` detiene llamadas a un servicio que esta fallando para evitar que todo el sistema colapse.
 
-**Real-time Example:** Si falla el payment gateway, se paran temporalmente las llamadas y se usa un fallback.
+Real-time Example: Si falla el payment gateway, se paran temporalmente las llamadas y se usa un fallback.
 
 ## 82. Preventing Duplicate API Requests
 
-**Techniques:**
+Techniques:
 
 - idempotency keys
 - request hashing
 - unique transaction IDs
 
-**Example:** Evitar doble pago cuando el usuario pulsa `Pay` dos veces.
+Example: Evitar doble pago cuando el usuario pulsa `Pay` dos veces.
 
 ## 83. API Schema Evolution
 
-**Definition:** Gestionar cambios de esquema sin romper a los clientes existentes.
+Gestionar cambios de esquema sin romper a los clientes existentes.
 
-**Techniques:**
+Techniques:
 
 - versioning
 - backward compatibility
@@ -101,7 +101,7 @@ Se usa mucho en microservicios.
 
 ## 84. Logging API Calls
 
-**Logging Includes:**
+Logging Includes:
 
 - timestamp
 - endpoint
@@ -110,7 +110,7 @@ Se usa mucho en microservicios.
 - user ID
 - errors
 
-**Why important:**
+Why important:
 
 - debugging
 - auditing
@@ -118,16 +118,16 @@ Se usa mucho en microservicios.
 
 ## 85. API Abuse
 
-**Definition:** Uso indebido de la API, intencional o no.
+Uso indebido de la API, intencional o no.
 
-**Examples:**
+Examples:
 
 - brute force
 - scraping
 - DDoS
 - exceso de requests
 
-**Prevention:**
+Prevention:
 
 - rate limiting
 - captcha
@@ -135,14 +135,14 @@ Se usa mucho en microservicios.
 
 ## 86. Preventing SQL Injection via API
 
-**Techniques:**
+Techniques:
 
 - input validation
 - prepared statements
 - ORM
 - escaping inputs
 
-**Bad Example:**
+Bad Example:
 
 ```text
 SELECT * FROM users WHERE id= + userInput
@@ -150,13 +150,13 @@ SELECT * FROM users WHERE id= + userInput
 
 ## 87. API Timeout
 
-**Definition:** Tiempo maximo que un cliente espera una respuesta.
+Tiempo maximo que un cliente espera una respuesta.
 
-**Real-time Example:** Una API de pagos puede cortar por timeout a los 30 segundos.
+Real-time Example: Una API de pagos puede cortar por timeout a los 30 segundos.
 
 ## 88. Handling Concurrent API Requests
 
-**Techniques:**
+Techniques:
 
 - async processing
 - thread pools
@@ -164,13 +164,13 @@ SELECT * FROM users WHERE id= + userInput
 - locks
 - optimistic concurrency control
 
-**Real-time Example:** Muchos usuarios intentando reservar el mismo asiento de tren.
+Real-time Example: Muchos usuarios intentando reservar el mismo asiento de tren.
 
 ## 89. Blue-Green Deployment
 
-**Definition:** Desplegar una nueva version sin downtime usando dos entornos.
+Desplegar una nueva version sin downtime usando dos entornos.
 
-**Flow:**
+Flow:
 
 - `Blue` = version anterior
 - `Green` = version nueva
@@ -178,9 +178,9 @@ SELECT * FROM users WHERE id= + userInput
 
 ## 90. Canary Release
 
-**Definition:** Liberar una nueva version poco a poco a un pequeno porcentaje de usuarios.
+Liberar una nueva version poco a poco a un pequeno porcentaje de usuarios.
 
-**Benefit:** Detectar bugs antes del rollout completo.
+Benefit: Detectar bugs antes del rollout completo.
 
 ## Resumen rapido
 
@@ -195,3 +195,4 @@ SELECT * FROM users WHERE id= + userInput
 ## Siguiente paso
 
 La ultima parte cierra con testing automatico, compatibilidad, tracing y diseno orientado a contrato.
+
